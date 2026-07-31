@@ -92,11 +92,18 @@ $projectFolderName = Split-Path $projectPath -Leaf
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
     throw 'Docker Desktop was not found. Install and start Docker Desktop, then run the export again.'
 }
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    throw 'Git was not found. It is required to collect the current project files safely.'
+}
 if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
     throw 'The local .env file was not found. Start the project once or create .env from .env.example.'
 }
 if (-not (Test-Path -LiteralPath $composePath -PathType Leaf)) {
     throw 'compose.yaml was not found next to this script.'
+}
+& git -C $projectPath rev-parse --is-inside-work-tree *> $null
+if ($LASTEXITCODE -ne 0) {
+    throw 'The project folder is not a Git working tree, so its files cannot be collected safely.'
 }
 
 $settings = Read-DotEnv -Path $envPath
@@ -184,6 +191,12 @@ try {
         Copy-Item -LiteralPath $wpConfigPath -Destination (Join-Path $temporaryPath 'wp-config.php')
     }
 
+    $localAdminPath = Join-Path $projectPath '.local-admin.txt'
+    $localAdminIncluded = Test-Path -LiteralPath $localAdminPath -PathType Leaf
+    if ($localAdminIncluded) {
+        Copy-Item -LiteralPath $localAdminPath -Destination (Join-Path $temporaryPath 'local-admin.txt')
+    }
+
     $archiveUploadsPath = Join-Path $temporaryPath 'uploads'
     New-Item -ItemType Directory -Path $archiveUploadsPath | Out-Null
     Write-Host 'Copying WordPress uploads from the container...'
@@ -196,9 +209,69 @@ try {
         $uploadBytes = [long](($uploadFiles | Measure-Object -Property Length -Sum).Sum)
     }
 
+    Write-Host 'Copying the current project files and work scripts...'
+    $archiveProjectFilesPath = Join-Path $temporaryPath 'project-files'
+    New-Item -ItemType Directory -Path $archiveProjectFilesPath | Out-Null
+    $projectRelativeFiles = @(& git -C $projectPath -c core.quotepath=false ls-files --cached --others --exclude-standard)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Git could not list the current project files.'
+    }
+
+    foreach ($relativePath in $projectRelativeFiles) {
+        if (-not $relativePath) {
+            continue
+        }
+        if ([System.IO.Path]::IsPathRooted($relativePath) -or $relativePath -match '(^|[\\/])\.\.([\\/]|$)') {
+            throw "Git returned an unsafe project path: $relativePath"
+        }
+
+        $sourcePath = Join-Path $projectPath $relativePath
+        if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
+            continue
+        }
+        $destinationPath = Join-Path $archiveProjectFilesPath $relativePath
+        $destinationParent = Split-Path -Parent $destinationPath
+        New-Item -ItemType Directory -Path $destinationParent -Force | Out-Null
+        Copy-Item -LiteralPath $sourcePath -Destination $destinationPath -Force
+    }
+
+    $requiredScripts = @(
+        'script-local-export.sh',
+        'script-local-export.ps1',
+        'script-local-export.command',
+        'script-local-export.cmd',
+        'script-local-import.sh',
+        'script-local-import.ps1',
+        'script-local-import.command',
+        'script-local-import.cmd',
+        'script-project-handoff.sh',
+        'script-project-handoff.ps1',
+        'script-static-export.sh',
+        'script-static-export.ps1',
+        'script-static-export.php',
+        'Начать работу.command',
+        'Начать работу.cmd',
+        'Закончить работу.command',
+        'Закончить работу.cmd'
+    )
+    foreach ($requiredScript in $requiredScripts) {
+        if (-not (Test-Path -LiteralPath (Join-Path $archiveProjectFilesPath $requiredScript) -PathType Leaf)) {
+            throw "A required work script was not collected: $requiredScript"
+        }
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $archiveProjectFilesPath 'PROJECT_HANDOFF.md') -PathType Leaf)) {
+        throw 'PROJECT_HANDOFF.md was not collected into the transfer archive.'
+    }
+
+    $projectFiles = @(Get-ChildItem -LiteralPath $archiveProjectFilesPath -Force -Recurse -File)
+    $projectFilesBytes = 0L
+    if ($projectFiles.Count -gt 0) {
+        $projectFilesBytes = [long](($projectFiles | Measure-Object -Property Length -Sum).Sum)
+    }
+
     $manifest = [ordered]@{
         format = 'wordpress-site2-transfer'
-        formatVersion = 1
+        formatVersion = 2
         createdAtUtc = (Get-Date).ToUniversalTime().ToString('o')
         sourcePlatform = 'Windows'
         projectFolderName = $projectFolderName
@@ -206,10 +279,17 @@ try {
         siteUrl = if ($settings.ContainsKey('WP_SITE_URL')) { $settings['WP_SITE_URL'] } else { '' }
         databaseFile = 'database.sql'
         uploadsDirectory = 'uploads'
+        projectFilesDirectory = 'project-files'
         uploadFileCount = $uploadFiles.Count
         uploadBytes = $uploadBytes
+        projectFileCount = $projectFiles.Count
+        projectFilesBytes = $projectFilesBytes
         includesEnvironment = $true
         includesWpConfig = $wpConfigIncluded
+        includesLocalAdminFile = $localAdminIncluded
+        includesProjectFiles = $true
+        includesWorkScripts = $true
+        includesProjectHandoff = $true
         privateArchive = $true
     }
     $manifest | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $temporaryPath 'manifest.json') -Encoding UTF8
@@ -232,6 +312,7 @@ try {
         )
         try {
             [void]$zipArchive.CreateEntry('uploads/')
+            [void]$zipArchive.CreateEntry('project-files/')
             Get-ChildItem -LiteralPath $temporaryPath -Force -Recurse -File | ForEach-Object {
                 $relativePath = $_.FullName.Substring($temporaryPath.Length).TrimStart('\', '/')
                 $portableEntryName = $relativePath.Replace('\', '/')

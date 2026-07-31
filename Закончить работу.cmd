@@ -8,6 +8,9 @@ echo.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0script-static-export.ps1"
 set "static_exit_code=%ERRORLEVEL%"
 if not "%static_exit_code%"=="0" goto static_export_failed
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0script-project-handoff.ps1"
+set "handoff_exit_code=%ERRORLEVEL%"
+if not "%handoff_exit_code%"=="0" goto handoff_failed
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0script-local-export.ps1"
 set "exit_code=%ERRORLEVEL%"
 echo.
@@ -21,6 +24,10 @@ goto export_done
 :static_export_failed
 set "exit_code=%static_exit_code%"
 echo Static page export failed. The private transfer archive was not created.
+goto export_done
+:handoff_failed
+set "exit_code=%handoff_exit_code%"
+echo Project handoff update failed. The private transfer archive was not created.
 :export_done
 echo.
 echo This window will close automatically in 10 seconds.

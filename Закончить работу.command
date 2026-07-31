@@ -20,6 +20,18 @@ if [[ "$static_exit_code" -ne 0 ]]; then
     exit "$static_exit_code"
 fi
 
+/bin/bash "$script_dir/script-project-handoff.sh"
+handoff_exit_code=$?
+if [[ "$handoff_exit_code" -ne 0 ]]; then
+    echo
+    echo "Project handoff update failed with exit code $handoff_exit_code. Review the message above."
+    echo 'The private transfer archive was not created.'
+    echo
+    echo 'This window will close automatically in 10 seconds.'
+    sleep 10
+    exit "$handoff_exit_code"
+fi
+
 /bin/bash "$script_dir/script-local-export.sh"
 exit_code=$?
 

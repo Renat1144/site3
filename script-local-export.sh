@@ -118,6 +118,14 @@ command -v zip >/dev/null 2>&1 || {
     echo 'The zip command was not found.' >&2
     exit 1
 }
+command -v git >/dev/null 2>&1 || {
+    echo 'Git was not found. It is required to collect the current project files safely.' >&2
+    exit 1
+}
+git -C "$project_path" rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+    echo 'The project folder is not a Git working tree, so its files cannot be collected safely.' >&2
+    exit 1
+}
 
 compose_project_name="$(read_env_value COMPOSE_PROJECT_NAME)"
 compose_project_name="${compose_project_name:-$project_folder_name}"
@@ -202,18 +210,71 @@ if [[ -f "$project_path/wp-config.php" ]]; then
     cp "$project_path/wp-config.php" "$temporary_path/wp-config.php"
     wp_config_included=true
 fi
+local_admin_included=false
+if [[ -f "$project_path/.local-admin.txt" ]]; then
+    cp "$project_path/.local-admin.txt" "$temporary_path/local-admin.txt"
+    local_admin_included=true
+fi
 echo 'Copying WordPress uploads from the container...'
 "${compose[@]}" exec -T wordpress sh -lc 'mkdir -p /var/www/html/wp-content/uploads'
 "${compose[@]}" cp 'wordpress:/var/www/html/wp-content/uploads/.' "$temporary_path/uploads"
 
+echo 'Copying the current project files and work scripts...'
+project_files_path="$temporary_path/project-files"
+mkdir -p "$project_files_path"
+while IFS= read -r -d '' relative_path; do
+    case "$relative_path" in
+        ''|/*|../*|*/../*|*/..)
+            echo "Git returned an unsafe project path: $relative_path" >&2
+            exit 1
+            ;;
+    esac
+
+    source_path="$project_path/$relative_path"
+    [[ -f "$source_path" ]] || continue
+    destination_path="$project_files_path/$relative_path"
+    mkdir -p "$(dirname "$destination_path")"
+    cp -p "$source_path" "$destination_path"
+done < <(git -C "$project_path" -c core.quotepath=false ls-files --cached --others --exclude-standard -z)
+
+for required_script in \
+    'script-local-export.sh' \
+    'script-local-export.ps1' \
+    'script-local-export.command' \
+    'script-local-export.cmd' \
+    'script-local-import.sh' \
+    'script-local-import.ps1' \
+    'script-local-import.command' \
+    'script-local-import.cmd' \
+    'script-project-handoff.sh' \
+    'script-project-handoff.ps1' \
+    'script-static-export.sh' \
+    'script-static-export.ps1' \
+    'script-static-export.php' \
+    'Начать работу.command' \
+    'Начать работу.cmd' \
+    'Закончить работу.command' \
+    'Закончить работу.cmd'; do
+    [[ -f "$project_files_path/$required_script" ]] || {
+        echo "A required work script was not collected: $required_script" >&2
+        exit 1
+    }
+done
+[[ -f "$project_files_path/PROJECT_HANDOFF.md" ]] || {
+    echo 'PROJECT_HANDOFF.md was not collected into the transfer archive.' >&2
+    exit 1
+}
+
 upload_file_count="$(find "$temporary_path/uploads" -type f | wc -l | tr -d ' ')"
 upload_bytes="$(du -sk "$temporary_path/uploads" | awk '{print $1 * 1024}')"
+project_file_count="$(find "$project_files_path" -type f | wc -l | tr -d ' ')"
+project_files_bytes="$(du -sk "$project_files_path" | awk '{print $1 * 1024}')"
 created_at_utc="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
 printf '%s\n' \
     '{' \
     '  "format": "wordpress-site2-transfer",' \
-    '  "formatVersion": 1,' \
+    '  "formatVersion": 2,' \
     "  \"createdAtUtc\": \"$(json_escape "$created_at_utc")\"," \
     '  "sourcePlatform": "macOS",' \
     "  \"projectFolderName\": \"$(json_escape "$project_folder_name")\"," \
@@ -221,10 +282,17 @@ printf '%s\n' \
     "  \"siteUrl\": \"$(json_escape "$site_url")\"," \
     '  "databaseFile": "database.sql",' \
     '  "uploadsDirectory": "uploads",' \
+    '  "projectFilesDirectory": "project-files",' \
     "  \"uploadFileCount\": $upload_file_count," \
     "  \"uploadBytes\": $upload_bytes," \
+    "  \"projectFileCount\": $project_file_count," \
+    "  \"projectFilesBytes\": $project_files_bytes," \
     '  "includesEnvironment": true,' \
     "  \"includesWpConfig\": $wp_config_included," \
+    "  \"includesLocalAdminFile\": $local_admin_included," \
+    '  "includesProjectFiles": true,' \
+    '  "includesWorkScripts": true,' \
+    '  "includesProjectHandoff": true,' \
     '  "privateArchive": true' \
     '}' > "$temporary_path/manifest.json"
 transfer_file_count="$(find "$temporary_path" -type f | wc -l | tr -d ' ')"

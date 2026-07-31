@@ -174,7 +174,8 @@ try {
         throw 'manifest.json is missing from the transfer archive.'
     }
     $manifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($manifest.format -ne 'wordpress-site2-transfer' -or [int]$manifest.formatVersion -ne 1) {
+    $manifestFormatVersion = [int]$manifest.formatVersion
+    if ($manifest.format -ne 'wordpress-site2-transfer' -or $manifestFormatVersion -notin @(1, 2)) {
         throw 'This ZIP is not a supported wordpress_site2 transfer archive.'
     }
     if ($manifest.PSObject.Properties.Name -contains 'projectFolderName' -and $manifest.projectFolderName -and [string]$manifest.projectFolderName -ne $projectFolderName) {
@@ -184,11 +185,29 @@ try {
         throw 'database.sql is missing or empty in the transfer archive.'
     }
 
+    $projectFilesDirectory = if ($manifest.PSObject.Properties.Name -contains 'projectFilesDirectory' -and $manifest.projectFilesDirectory) {
+        [string]$manifest.projectFilesDirectory
+    } else {
+        'project-files'
+    }
+    if ([System.IO.Path]::IsPathRooted($projectFilesDirectory) -or $projectFilesDirectory -match '(^|[\\/])\.\.([\\/]|$)') {
+        throw 'The project files directory in the manifest is unsafe.'
+    }
+    $incomingProjectFilesPath = Join-Path $temporaryPath $projectFilesDirectory
+    if ($manifestFormatVersion -ge 2 -and -not (Test-Path -LiteralPath $incomingProjectFilesPath -PathType Container)) {
+        throw 'The project files directory is missing from this version 2 archive.'
+    }
+
     if ($ValidateOnly) {
         Write-Host 'Transfer archive validation passed.' -ForegroundColor Green
         Write-Host "Archive: $ArchivePath"
         Write-Host "Created: $($manifest.createdAtUtc)"
         Write-Host "Upload files: $($manifest.uploadFileCount)"
+        Write-Host "Format version: $manifestFormatVersion"
+        if ($manifestFormatVersion -ge 2) {
+            $validatedProjectFileCount = @(Get-ChildItem -LiteralPath $incomingProjectFilesPath -Force -Recurse -File).Count
+            Write-Host "Project files: $validatedProjectFileCount"
+        }
         Write-Host 'No local WordPress data was changed.'
         return
     }
@@ -200,7 +219,11 @@ try {
     Write-Host ''
     Write-Host 'The import will replace the local WordPress database and uploads with the state from:' -ForegroundColor Yellow
     Write-Host $ArchivePath
-    Write-Host 'The project code is not replaced; update it through GitHub before importing.'
+    if ($manifestFormatVersion -ge 2) {
+        Write-Host 'The project files and work scripts will also be restored from this archive.'
+    } else {
+        Write-Host 'This older archive contains no project files; the current local project files will be kept.'
+    }
     Write-Host 'A recovery archive of the current local state will be created first.'
     Write-Host ''
 
@@ -269,6 +292,33 @@ try {
         if ($LASTEXITCODE -ne 0) {
             throw 'The safety backup failed. Import was stopped before any data was replaced.'
         }
+    }
+
+    if ($manifestFormatVersion -ge 2) {
+        Write-Host 'Restoring project files and work scripts...'
+        $incomingProjectFiles = @(Get-ChildItem -LiteralPath $incomingProjectFilesPath -Force -Recurse -File)
+        $restoredProjectFiles = 0
+        foreach ($sourceFile in $incomingProjectFiles) {
+            $relativePath = $sourceFile.FullName.Substring($incomingProjectFilesPath.Length).TrimStart('\', '/')
+            if (-not $relativePath -or [System.IO.Path]::IsPathRooted($relativePath) -or $relativePath -match '(^|[\\/])\.\.([\\/]|$)') {
+                throw "The archive contains an unsafe project file path: $relativePath"
+            }
+
+            $destinationPath = Join-Path $projectPath $relativePath
+            $destinationParent = Split-Path -Parent $destinationPath
+            New-Item -ItemType Directory -Path $destinationParent -Force | Out-Null
+            $temporaryDestination = $destinationPath + '.transfer-import-' + [Guid]::NewGuid().ToString('N')
+            Copy-Item -LiteralPath $sourceFile.FullName -Destination $temporaryDestination -Force
+            Move-Item -LiteralPath $temporaryDestination -Destination $destinationPath -Force
+            $restoredProjectFiles++
+        }
+        Write-Host "Project files restored: $restoredProjectFiles"
+    }
+
+    $incomingLocalAdminPath = Join-Path $temporaryPath 'local-admin.txt'
+    if (Test-Path -LiteralPath $incomingLocalAdminPath -PathType Leaf) {
+        Copy-Item -LiteralPath $incomingLocalAdminPath -Destination (Join-Path $projectPath '.local-admin.txt') -Force
+        Write-Host 'Local WordPress login note restored.'
     }
 
     Write-Host 'Restoring WordPress uploads into the container...'

@@ -183,10 +183,14 @@ grep -q '"format"[[:space:]]*:[[:space:]]*"wordpress-site2-transfer"' "$temporar
     echo 'This ZIP is not a supported wordpress_site2 transfer archive.' >&2
     exit 1
 }
-grep -q '"formatVersion"[[:space:]]*:[[:space:]]*1' "$temporary_path/manifest.json" || {
+manifest_format_version="$(sed -n 's/.*"formatVersion"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$temporary_path/manifest.json" | head -n 1)"
+case "$manifest_format_version" in
+    1|2) ;;
+    *)
     echo 'This transfer archive version is not supported.' >&2
     exit 1
-}
+        ;;
+esac
 manifest_project_folder="$(read_manifest_string projectFolderName)"
 if [[ -n "$manifest_project_folder" && "$manifest_project_folder" != "$project_folder_name" ]]; then
     echo "This archive belongs to project '$manifest_project_folder', not '$project_folder_name'." >&2
@@ -196,10 +200,29 @@ fi
     echo 'database.sql is missing or empty in the transfer archive.' >&2
     exit 1
 }
+project_files_directory="$(read_manifest_string projectFilesDirectory)"
+project_files_directory="${project_files_directory:-project-files}"
+if [[ "$manifest_format_version" -ge 2 ]]; then
+    case "$project_files_directory" in
+        ''|/*|../*|*/../*|*/..)
+            echo 'The project files directory in the manifest is unsafe.' >&2
+            exit 1
+            ;;
+    esac
+    [[ -d "$temporary_path/$project_files_directory" ]] || {
+        echo 'The project files directory is missing from this version 2 archive.' >&2
+        exit 1
+    }
+fi
 
 if [[ "$validate_only" -eq 1 ]]; then
     echo 'Transfer archive validation passed.'
     echo "Archive: $archive_path"
+    echo "Format version: $manifest_format_version"
+    if [[ "$manifest_format_version" -ge 2 ]]; then
+        project_file_count="$(find "$temporary_path/$project_files_directory" -type f | wc -l | tr -d ' ')"
+        echo "Project files: $project_file_count"
+    fi
     echo 'No local WordPress data was changed.'
     exit 0
 fi
@@ -212,7 +235,11 @@ command -v docker >/dev/null 2>&1 || {
 echo
 echo 'The import will replace the local WordPress database and uploads with the state from:'
 echo "$archive_path"
-echo 'The project code is not replaced; update it through GitHub before importing.'
+if [[ "$manifest_format_version" -ge 2 ]]; then
+    echo 'The project files and work scripts will also be restored from this archive.'
+else
+    echo 'This older archive contains no project files; the current local project files will be kept.'
+fi
 echo 'A recovery archive of the current local state will be created first.'
 echo
 
@@ -266,6 +293,34 @@ if [[ "$skip_backup" -ne 1 ]]; then
     bash "$project_path/script-local-export.sh" \
         --output-dir "$backups_path" \
         --archive-name "$project_folder_name-before-import-$timestamp.zip"
+fi
+
+if [[ "$manifest_format_version" -ge 2 ]]; then
+    echo 'Restoring project files and work scripts...'
+    restored_project_files=0
+    while IFS= read -r -d '' source_path; do
+        relative_path="${source_path#"$temporary_path/$project_files_directory/"}"
+        case "$relative_path" in
+            ''|/*|../*|*/../*|*/..)
+                echo "The archive contains an unsafe project file path: $relative_path" >&2
+                exit 1
+                ;;
+        esac
+
+        destination_path="$project_path/$relative_path"
+        mkdir -p "$(dirname "$destination_path")"
+        temporary_destination="$destination_path.transfer-import-$$"
+        cp -p "$source_path" "$temporary_destination"
+        mv -f "$temporary_destination" "$destination_path"
+        restored_project_files=$((restored_project_files + 1))
+    done < <(find "$temporary_path/$project_files_directory" -type f -print0)
+    echo "Project files restored: $restored_project_files"
+fi
+
+if [[ -f "$temporary_path/local-admin.txt" ]]; then
+    cp "$temporary_path/local-admin.txt" "$project_path/.local-admin.txt"
+    chmod 600 "$project_path/.local-admin.txt" 2>/dev/null || true
+    echo 'Local WordPress login note restored.'
 fi
 
 echo 'Restoring WordPress uploads into the container...'
