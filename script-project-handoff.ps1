@@ -4,6 +4,48 @@ param()
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+function Find-GitExecutable {
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    $gitCommand = Get-Command git.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($gitCommand -and $gitCommand.Source) {
+        $candidates.Add($gitCommand.Source)
+    }
+
+    if ($env:ProgramFiles) {
+        $candidates.Add((Join-Path $env:ProgramFiles 'Git\cmd\git.exe'))
+    }
+    $programFilesX86 = [Environment]::GetEnvironmentVariable('ProgramFiles(x86)')
+    if ($programFilesX86) {
+        $candidates.Add((Join-Path $programFilesX86 'Git\cmd\git.exe'))
+    }
+    if ($env:LOCALAPPDATA) {
+        $candidates.Add((Join-Path $env:LOCALAPPDATA 'Programs\Git\cmd\git.exe'))
+        $githubDesktopGit = Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'GitHubDesktop\app-*\resources\app\git\cmd\git.exe') -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1
+        if ($githubDesktopGit) {
+            $candidates.Add($githubDesktopGit.FullName)
+        }
+    }
+    if ($env:USERPROFILE) {
+        $candidates.Add((Join-Path $env:USERPROFILE 'scoop\apps\git\current\cmd\git.exe'))
+        $codexRuntimeGit = Get-ChildItem -Path (Join-Path $env:USERPROFILE '.cache\codex-runtimes\*\dependencies\native\git\cmd\git.exe') -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1
+        if ($codexRuntimeGit) {
+            $candidates.Add($codexRuntimeGit.FullName)
+        }
+    }
+
+    foreach ($candidate in @($candidates | Select-Object -Unique)) {
+        if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf)) {
+            return [System.IO.Path]::GetFullPath($candidate)
+        }
+    }
+
+    return $null
+}
+
 $projectPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $handoffPath = Join-Path $projectPath 'PROJECT_HANDOFF.md'
 $envPath = Join-Path $projectPath '.env'
@@ -18,14 +60,15 @@ $branch = 'Git is unavailable'
 $commit = 'Git is unavailable'
 $gitStatus = @()
 
-if (Get-Command git -ErrorAction SilentlyContinue) {
-    & git -C $projectPath rev-parse --is-inside-work-tree *> $null
+$gitExecutable = Find-GitExecutable
+if ($gitExecutable) {
+    & $gitExecutable -C $projectPath rev-parse --is-inside-work-tree *> $null
     if ($LASTEXITCODE -eq 0) {
-        $branchOutput = @(& git -C $projectPath branch --show-current 2>$null)
+        $branchOutput = @(& $gitExecutable -C $projectPath branch --show-current 2>$null)
         $branch = if ($LASTEXITCODE -eq 0 -and $branchOutput.Count -gt 0 -and $branchOutput[0]) { $branchOutput[0] } else { 'detached HEAD' }
-        $commitOutput = @(& git -C $projectPath rev-parse --short HEAD 2>$null)
+        $commitOutput = @(& $gitExecutable -C $projectPath rev-parse --short HEAD 2>$null)
         $commit = if ($LASTEXITCODE -eq 0 -and $commitOutput.Count -gt 0 -and $commitOutput[0]) { $commitOutput[0] } else { 'unavailable' }
-        $gitStatus = @(& git -C $projectPath -c core.quotepath=false status --short --untracked-files=all 2>$null)
+        $gitStatus = @(& $gitExecutable -C $projectPath -c core.quotepath=false status --short --untracked-files=all 2>$null)
     }
 }
 

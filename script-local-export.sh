@@ -251,10 +251,10 @@ for required_script in \
     'script-static-export.sh' \
     'script-static-export.ps1' \
     'script-static-export.php' \
-    'Начать работу.command' \
-    'Начать работу.cmd' \
-    'Закончить работу.command' \
-    'Закончить работу.cmd'; do
+    'START_WORK.command' \
+    'START_WORK.cmd' \
+    'FINISH_WORK.command' \
+    'FINISH_WORK.cmd'; do
     [[ -f "$project_files_path/$required_script" ]] || {
         echo "A required work script was not collected: $required_script" >&2
         exit 1

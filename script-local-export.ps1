@@ -36,6 +36,89 @@ function Invoke-Compose {
     }
 }
 
+function Find-GitExecutable {
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    $gitCommand = Get-Command git.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($gitCommand -and $gitCommand.Source) {
+        $candidates.Add($gitCommand.Source)
+    }
+
+    if ($env:ProgramFiles) {
+        $candidates.Add((Join-Path $env:ProgramFiles 'Git\cmd\git.exe'))
+    }
+    $programFilesX86 = [Environment]::GetEnvironmentVariable('ProgramFiles(x86)')
+    if ($programFilesX86) {
+        $candidates.Add((Join-Path $programFilesX86 'Git\cmd\git.exe'))
+    }
+    if ($env:LOCALAPPDATA) {
+        $candidates.Add((Join-Path $env:LOCALAPPDATA 'Programs\Git\cmd\git.exe'))
+        $githubDesktopGit = Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'GitHubDesktop\app-*\resources\app\git\cmd\git.exe') -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1
+        if ($githubDesktopGit) {
+            $candidates.Add($githubDesktopGit.FullName)
+        }
+    }
+    if ($env:USERPROFILE) {
+        $candidates.Add((Join-Path $env:USERPROFILE 'scoop\apps\git\current\cmd\git.exe'))
+        $codexRuntimeGit = Get-ChildItem -Path (Join-Path $env:USERPROFILE '.cache\codex-runtimes\*\dependencies\native\git\cmd\git.exe') -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1
+        if ($codexRuntimeGit) {
+            $candidates.Add($codexRuntimeGit.FullName)
+        }
+    }
+
+    foreach ($candidate in @($candidates | Select-Object -Unique)) {
+        if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf)) {
+            return [System.IO.Path]::GetFullPath($candidate)
+        }
+    }
+
+    return $null
+}
+
+function Get-GitProjectFiles {
+    param(
+        [Parameter(Mandatory = $true)][string]$GitExecutable,
+        [Parameter(Mandatory = $true)][string]$WorkingDirectory
+    )
+
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = $GitExecutable
+    $startInfo.WorkingDirectory = $WorkingDirectory
+    $startInfo.Arguments = '-c core.quotepath=false ls-files -z --cached --others --exclude-standard'
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $startInfo.StandardOutputEncoding = New-Object System.Text.UTF8Encoding($false)
+    $startInfo.StandardErrorEncoding = New-Object System.Text.UTF8Encoding($false)
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    if (-not $process.Start()) {
+        throw 'Git could not start to list the current project files.'
+    }
+
+    $standardOutputTask = $process.StandardOutput.ReadToEndAsync()
+    $standardErrorTask = $process.StandardError.ReadToEndAsync()
+    $process.WaitForExit()
+    $standardOutput = $standardOutputTask.GetAwaiter().GetResult()
+    $standardError = $standardErrorTask.GetAwaiter().GetResult().Trim()
+    $exitCode = $process.ExitCode
+    $process.Dispose()
+
+    if ($exitCode -ne 0) {
+        if ($standardError) {
+            throw "Git could not list the current project files: $standardError"
+        }
+        throw "Git could not list the current project files (exit code $exitCode)."
+    }
+
+    return @($standardOutput -split "`0" | Where-Object { $_ })
+}
+
 function Find-GoogleDriveSitesPath {
     param([string]$ExplicitPath)
 
@@ -92,7 +175,8 @@ $projectFolderName = Split-Path $projectPath -Leaf
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
     throw 'Docker Desktop was not found. Install and start Docker Desktop, then run the export again.'
 }
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+$gitExecutable = Find-GitExecutable
+if (-not $gitExecutable) {
     throw 'Git was not found. It is required to collect the current project files safely.'
 }
 if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
@@ -101,7 +185,7 @@ if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
 if (-not (Test-Path -LiteralPath $composePath -PathType Leaf)) {
     throw 'compose.yaml was not found next to this script.'
 }
-& git -C $projectPath rev-parse --is-inside-work-tree *> $null
+& $gitExecutable -C $projectPath rev-parse --is-inside-work-tree *> $null
 if ($LASTEXITCODE -ne 0) {
     throw 'The project folder is not a Git working tree, so its files cannot be collected safely.'
 }
@@ -212,10 +296,7 @@ try {
     Write-Host 'Copying the current project files and work scripts...'
     $archiveProjectFilesPath = Join-Path $temporaryPath 'project-files'
     New-Item -ItemType Directory -Path $archiveProjectFilesPath | Out-Null
-    $projectRelativeFiles = @(& git -C $projectPath -c core.quotepath=false ls-files --cached --others --exclude-standard)
-    if ($LASTEXITCODE -ne 0) {
-        throw 'Git could not list the current project files.'
-    }
+    $projectRelativeFiles = @(Get-GitProjectFiles -GitExecutable $gitExecutable -WorkingDirectory $projectPath)
 
     foreach ($relativePath in $projectRelativeFiles) {
         if (-not $relativePath) {
@@ -249,10 +330,10 @@ try {
         'script-static-export.sh',
         'script-static-export.ps1',
         'script-static-export.php',
-        'Начать работу.command',
-        'Начать работу.cmd',
-        'Закончить работу.command',
-        'Закончить работу.cmd'
+        'START_WORK.command',
+        'START_WORK.cmd',
+        'FINISH_WORK.command',
+        'FINISH_WORK.cmd'
     )
     foreach ($requiredScript in $requiredScripts) {
         if (-not (Test-Path -LiteralPath (Join-Path $archiveProjectFilesPath $requiredScript) -PathType Leaf)) {
