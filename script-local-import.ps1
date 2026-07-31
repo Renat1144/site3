@@ -87,14 +87,14 @@ function Find-GoogleDriveSitesPath {
 
 $projectPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $envPath = Join-Path $projectPath '.env'
-$composePath = Join-Path $projectPath 'docker-compose.yml'
+$composePath = Join-Path $projectPath 'compose.yaml'
 $exportScript = Join-Path $projectPath 'script-local-export.ps1'
 $backupsPath = Join-Path $projectPath 'backups'
 $uploadsPath = Join-Path $projectPath 'wp-content\uploads'
 $projectFolderName = Split-Path $projectPath -Leaf
 
 if (-not (Test-Path -LiteralPath $composePath -PathType Leaf)) {
-    throw 'docker-compose.yml was not found next to this script.'
+    throw 'compose.yaml was not found next to this script.'
 }
 
 $archiveFromGoogleDrive = -not [bool]$ArchivePath

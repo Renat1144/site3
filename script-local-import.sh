@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_path="$(cd "$(dirname "$0")" && pwd)"
 env_path="$project_path/.env"
-compose_path="$project_path/docker-compose.yml"
+compose_path="$project_path/compose.yaml"
 uploads_path="$project_path/wp-content/uploads"
 backups_path="$project_path/backups"
 project_folder_name="$(basename "$project_path")"
@@ -103,7 +103,7 @@ command -v unzip >/dev/null 2>&1 || {
     exit 1
 }
 [[ -f "$compose_path" ]] || {
-    echo 'docker-compose.yml was not found next to this script.' >&2
+    echo 'compose.yaml was not found next to this script.' >&2
     exit 1
 }
 

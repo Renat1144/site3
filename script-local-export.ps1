@@ -85,7 +85,7 @@ function Find-GoogleDriveSitesPath {
 
 $projectPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $envPath = Join-Path $projectPath '.env'
-$composePath = Join-Path $projectPath 'docker-compose.yml'
+$composePath = Join-Path $projectPath 'compose.yaml'
 $uploadsPath = Join-Path $projectPath 'wp-content\uploads'
 $projectFolderName = Split-Path $projectPath -Leaf
 
@@ -96,7 +96,7 @@ if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
     throw 'The local .env file was not found. Start the project once or create .env from .env.example.'
 }
 if (-not (Test-Path -LiteralPath $composePath -PathType Leaf)) {
-    throw 'docker-compose.yml was not found next to this script.'
+    throw 'compose.yaml was not found next to this script.'
 }
 
 $settings = Read-DotEnv -Path $envPath
