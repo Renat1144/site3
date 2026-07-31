@@ -1,0 +1,122 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "760px",
+      "wideSize": "1240px"
+    },
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        { "slug": "night", "name": "Bosphorus Night", "color": "#071C24" },
+        { "slug": "sea", "name": "Bosphorus Sea", "color": "#0D7773" },
+        { "slug": "coral", "name": "Pomegranate", "color": "#E45B3C" },
+        { "slug": "sun", "name": "Golden Hour", "color": "#F4BC5E" },
+        { "slug": "stone", "name": "Istanbul Stone", "color": "#F2EBDD" },
+        { "slug": "paper", "name": "Warm Paper", "color": "#FBF8F1" },
+        { "slug": "white", "name": "White", "color": "#FFFFFF" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "rem", "vw", "%"],
+      "spacingSizes": [
+        { "slug": "20", "size": "0.75rem", "name": "XS" },
+        { "slug": "30", "size": "1.25rem", "name": "S" },
+        { "slug": "40", "size": "2rem", "name": "M" },
+        { "slug": "50", "size": "3.5rem", "name": "L" },
+        { "slug": "60", "size": "6rem", "name": "XL" }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "Manrope, sans-serif",
+          "name": "Manrope",
+          "slug": "manrope",
+          "fontFace": [
+            {
+              "fontFamily": "Manrope",
+              "fontStyle": "normal",
+              "fontWeight": "200 800",
+              "src": ["file:./assets/fonts/Manrope-VariableFont_wght.woff2"]
+            }
+          ]
+        },
+        {
+          "fontFamily": "Platypi, serif",
+          "name": "Platypi",
+          "slug": "platypi",
+          "fontFace": [
+            {
+              "fontFamily": "Platypi",
+              "fontStyle": "normal",
+              "fontWeight": "300 800",
+              "src": ["file:./assets/fonts/Platypi-VariableFont_wght.woff2"]
+            }
+          ]
+        }
+      ],
+      "fontSizes": [
+        { "slug": "xs", "size": "0.76rem", "name": "Caption" },
+        { "slug": "sm", "size": "0.9rem", "name": "Small" },
+        { "slug": "md", "size": "1.05rem", "name": "Body" },
+        { "slug": "lg", "size": "clamp(1.25rem, 2vw, 1.7rem)", "name": "Lead" },
+        { "slug": "xl", "size": "clamp(2.25rem, 5vw, 4.8rem)", "name": "Section" },
+        { "slug": "hero", "size": "clamp(3.8rem, 9vw, 8.8rem)", "name": "Hero" }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#FBF8F1",
+      "text": "#071C24"
+    },
+    "spacing": {
+      "blockGap": "1.5rem",
+      "padding": {
+        "left": "clamp(1.25rem, 4vw, 4rem)",
+        "right": "clamp(1.25rem, 4vw, 4rem)"
+      }
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--manrope)",
+      "fontSize": "var(--wp--preset--font-size--md)",
+      "fontWeight": "400",
+      "lineHeight": "1.65"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--platypi)",
+          "fontWeight": "500",
+          "lineHeight": "1.02",
+          "letterSpacing": "-0.035em"
+        }
+      },
+      "link": {
+        "color": { "text": "#071C24" },
+        "typography": { "textDecoration": "none" },
+        ":hover": { "color": { "text": "#E45B3C" } }
+      },
+      "button": {
+        "color": { "background": "#E45B3C", "text": "#FFFFFF" },
+        "border": { "radius": "3px", "width": "0" },
+        "spacing": { "padding": { "top": "1rem", "bottom": "1rem", "left": "1.5rem", "right": "1.5rem" } },
+        "typography": { "fontSize": "0.78rem", "fontWeight": "700", "letterSpacing": "0.09em", "textTransform": "uppercase" }
+      }
+    },
+    "blocks": {
+      "core/navigation": {
+        "typography": { "fontSize": "0.8rem", "fontWeight": "650", "letterSpacing": "0.06em", "textTransform": "uppercase" }
+      }
+    }
+  },
+  "templateParts": [
+    { "area": "header", "name": "header", "title": "Header" },
+    { "area": "footer", "name": "footer", "title": "Footer" }
+  ]
+}
+

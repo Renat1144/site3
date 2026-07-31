@@ -1,0 +1,32 @@
+.env
+.local-admin.txt
+wp-config.php
+.DS_Store
+
+# WordPress core is installed by the official Docker image.
+wp-admin/
+wp-includes/
+wp-*.php
+index.php
+license.txt
+readme.html
+xmlrpc.php
+
+# Generated and third-party WordPress content.
+wp-content/index.php
+wp-content/languages/
+wp-content/plugins/
+wp-content/themes/twenty*/
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/debug.log
+
+# Local transfer archives can contain the database, users, and secrets.
+backups/
+*.sql
+*.zip
+*.sha256
+
+# The downloaded reference page is not part of the finished website.
+referens.html
