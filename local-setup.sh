@@ -74,6 +74,7 @@ if ! docker compose --profile tools run --rm wpcli wp core is-installed --allow-
 fi
 
 docker compose --profile tools run --rm wpcli wp theme activate turkey-signature --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogname "$WORDPRESS_TITLE" --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogdescription 'Авторские путешествия по Турции' --allow-root
 docker compose --profile tools run --rm wpcli wp option update timezone_string 'Europe/Moscow' --allow-root

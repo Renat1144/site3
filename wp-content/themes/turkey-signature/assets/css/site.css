@@ -154,6 +154,18 @@ body.admin-bar .site-header {
   padding: 0 !important;
 }
 
+.page-document {
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.page-starter {
+  min-height: 70vh;
+  padding-top: max(var(--ts-section), 8rem) !important;
+}
+
 .hero-section {
   min-height: 920px;
   padding: 0 var(--ts-gutter) !important;
@@ -904,6 +916,25 @@ body.admin-bar .site-header {
 .editor-styles-wrapper .reveal-on-scroll {
   opacity: 1;
   transform: none;
+}
+
+/*
+ * The Site Editor adds a block gap between template parts and forces the
+ * header back into normal document flow. Keep the canvas composition aligned
+ * with the front end while leaving every template part and block selectable.
+ */
+.editor-styles-wrapper .site-header {
+  position: absolute !important;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.editor-styles-wrapper .turkey-site,
+.editor-styles-wrapper .page-document,
+.editor-styles-wrapper .site-footer {
+  margin-block-start: 0 !important;
 }
 
 :focus-visible {

@@ -292,10 +292,16 @@ try {
     $sourceSiteUrl = if ($manifest.siteUrl) { [string]$manifest.siteUrl } else { '' }
     if ($sourceSiteUrl -and $targetSiteUrl -and $sourceSiteUrl -ne $targetSiteUrl) {
         Write-Host "Updating WordPress URLs from $sourceSiteUrl to $targetSiteUrl..."
-        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'search-replace', $sourceSiteUrl, $targetSiteUrl, '--all-tables-with-prefix', '--skip-columns=guid')
+        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'search-replace', $sourceSiteUrl, $targetSiteUrl, '--all-tables-with-prefix', '--skip-columns=guid', '--allow-root')
     }
 
-    Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'rewrite', 'flush')
+    $homepageMigration = 'wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php'
+    if (Test-Path -LiteralPath (Join-Path $projectPath $homepageMigration) -PathType Leaf) {
+        Write-Host 'Checking the editable homepage migration...'
+        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'eval-file', $homepageMigration, '--allow-root')
+    }
+
+    Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'rewrite', 'flush', '--allow-root')
     Invoke-Compose -Arguments @('restart', 'wordpress')
 
     Write-Host ''

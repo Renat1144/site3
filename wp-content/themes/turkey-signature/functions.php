@@ -51,3 +51,66 @@ add_action(
 	}
 );
 
+add_action(
+	'init',
+	static function () {
+		$page_type = get_post_type_object( 'page' );
+
+		if ( ! $page_type || ! empty( $page_type->template ) ) {
+			return;
+		}
+
+		$page_type->template = array(
+			array(
+				'core/template-part',
+				array(
+					'slug'      => 'header',
+					'theme'     => 'turkey-signature',
+					'tagName'   => 'header',
+					'className' => 'site-header',
+				),
+			),
+			array(
+				'core/group',
+				array(
+					'align'     => 'full',
+					'className' => 'section-shell page-starter',
+					'layout'    => array( 'type' => 'constrained' ),
+				),
+				array(
+					array(
+						'core/paragraph',
+						array(
+							'className'   => 'section-index',
+							'placeholder' => __( 'Раздел страницы', 'turkey-signature' ),
+						),
+					),
+					array(
+						'core/heading',
+						array(
+							'level'       => 1,
+							'fontSize'    => 'xl',
+							'placeholder' => __( 'Заголовок страницы', 'turkey-signature' ),
+						),
+					),
+					array(
+						'core/paragraph',
+						array(
+							'fontSize'    => 'lg',
+							'placeholder' => __( 'Добавьте содержание страницы…', 'turkey-signature' ),
+						),
+					),
+				),
+			),
+			array(
+				'core/template-part',
+				array(
+					'slug'      => 'footer',
+					'theme'     => 'turkey-signature',
+					'tagName'   => 'footer',
+					'className' => 'site-footer',
+				),
+			),
+		);
+	}
+);
