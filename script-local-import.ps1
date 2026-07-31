@@ -148,8 +148,13 @@ $containerImport = '/tmp/wordpress-site2-import-{0}.sql' -f [Guid]::NewGuid().To
 $containerImportCreated = $false
 
 try {
+    Add-Type -AssemblyName System.IO.Compression
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $archive = [System.IO.Compression.ZipFile]::OpenRead($ArchivePath)
+    $archive = [System.IO.Compression.ZipFile]::Open(
+        $ArchivePath,
+        [System.IO.Compression.ZipArchiveMode]::Read,
+        [System.Text.Encoding]::UTF8
+    )
     try {
         $safeRoot = [System.IO.Path]::GetFullPath($temporaryPath).TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
         foreach ($entry in $archive.Entries) {
@@ -157,12 +162,19 @@ try {
             if (-not $entryPath.StartsWith($safeRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
                 throw "The ZIP contains an unsafe path: $($entry.FullName)"
             }
+
+            if (-not $entry.Name) {
+                New-Item -ItemType Directory -Path $entryPath -Force | Out-Null
+                continue
+            }
+
+            $entryParent = Split-Path -Parent $entryPath
+            New-Item -ItemType Directory -Path $entryParent -Force | Out-Null
+            [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $entryPath, $true)
         }
     } finally {
         $archive.Dispose()
     }
-
-    Expand-Archive -LiteralPath $ArchivePath -DestinationPath $temporaryPath
 
     $manifestPath = Join-Path $temporaryPath 'manifest.json'
     $databasePath = Join-Path $temporaryPath 'database.sql'
@@ -342,16 +354,16 @@ try {
     $sourceSiteUrl = if ($manifest.siteUrl) { [string]$manifest.siteUrl } else { '' }
     if ($sourceSiteUrl -and $targetSiteUrl -and $sourceSiteUrl -ne $targetSiteUrl) {
         Write-Host "Updating WordPress URLs from $sourceSiteUrl to $targetSiteUrl..."
-        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'search-replace', $sourceSiteUrl, $targetSiteUrl, '--all-tables-with-prefix', '--skip-columns=guid', '--allow-root')
+        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'wp', 'search-replace', $sourceSiteUrl, $targetSiteUrl, '--all-tables-with-prefix', '--skip-columns=guid', '--allow-root')
     }
 
     $homepageMigration = 'wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php'
     if (Test-Path -LiteralPath (Join-Path $projectPath $homepageMigration) -PathType Leaf) {
         Write-Host 'Checking the editable homepage migration...'
-        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'eval-file', $homepageMigration, '--allow-root')
+        Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'wp', 'eval-file', $homepageMigration, '--allow-root')
     }
 
-    Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'rewrite', 'flush', '--allow-root')
+    Invoke-Compose -Arguments @('run', '--rm', 'wpcli', 'wp', 'rewrite', 'flush', '--allow-root')
     Invoke-Compose -Arguments @('restart', 'wordpress')
 
     Write-Host ''

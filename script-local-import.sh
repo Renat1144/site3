@@ -343,16 +343,16 @@ container_import_created=1
 
 if [[ -n "$source_site_url" && -n "$target_site_url" && "$source_site_url" != "$target_site_url" ]]; then
     echo "Updating WordPress URLs from $source_site_url to $target_site_url..."
-    "${compose[@]}" run --rm wpcli search-replace "$source_site_url" "$target_site_url" --all-tables-with-prefix --skip-columns=guid --allow-root
+    "${compose[@]}" run --rm wpcli wp search-replace "$source_site_url" "$target_site_url" --all-tables-with-prefix --skip-columns=guid --allow-root
 fi
 
 homepage_migration='wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php'
 if [[ -f "$project_path/$homepage_migration" ]]; then
     echo 'Checking the editable homepage migration...'
-    "${compose[@]}" run --rm wpcli eval-file "$homepage_migration" --allow-root
+    "${compose[@]}" run --rm wpcli wp eval-file "$homepage_migration" --allow-root
 fi
 
-"${compose[@]}" run --rm wpcli rewrite flush --allow-root
+"${compose[@]}" run --rm wpcli wp rewrite flush --allow-root
 "${compose[@]}" restart wordpress
 
 echo
