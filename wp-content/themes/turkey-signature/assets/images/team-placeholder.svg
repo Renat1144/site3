@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-labelledby="title description">
+  <title id="title">Место для фотографии участника команды</title>
+  <desc id="description">Декоративный силуэт в тёплой кремовой и сливовой палитре.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1e6da"/>
+      <stop offset="0.55" stop-color="#c9aaa5"/>
+      <stop offset="1" stop-color="#5a4658"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.2" r="0.82">
+      <stop offset="0" stop-color="#fff8ec" stop-opacity="0.92"/>
+      <stop offset="0.52" stop-color="#d6bd91" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#5a4658" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="silhouette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b5366"/>
+      <stop offset="1" stop-color="#242a3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#background)"/>
+  <rect width="1200" height="1500" fill="url(#glow)"/>
+  <path d="M150 1310V520c0-252 202-455 452-455s448 203 448 455v790" fill="none" stroke="#fff8ec" stroke-opacity="0.34" stroke-width="3"/>
+  <path d="M225 1310V560c0-210 168-380 377-380s373 170 373 380v750" fill="none" stroke="#fff8ec" stroke-opacity="0.2" stroke-width="2"/>
+  <circle cx="600" cy="585" r="178" fill="url(#silhouette)" opacity="0.92"/>
+  <path d="M252 1375c18-304 154-508 348-508s330 204 348 508" fill="url(#silhouette)" opacity="0.96"/>
+  <path d="M88 1130c202-48 392-31 570 50 169 77 322 77 454 27" fill="none" stroke="#d6bd91" stroke-opacity="0.7" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="110" cy="1125" r="11" fill="#b85c45"/>
+  <circle cx="1110" cy="1206" r="8" fill="#d6bd91"/>
+</svg>

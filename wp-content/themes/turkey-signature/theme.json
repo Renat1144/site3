@@ -10,12 +10,12 @@
     "color": {
       "defaultPalette": false,
       "palette": [
-        { "slug": "night", "name": "Bosphorus Night", "color": "#071C24" },
-        { "slug": "sea", "name": "Bosphorus Sea", "color": "#0D7773" },
-        { "slug": "coral", "name": "Pomegranate", "color": "#E45B3C" },
-        { "slug": "sun", "name": "Golden Hour", "color": "#F4BC5E" },
-        { "slug": "stone", "name": "Istanbul Stone", "color": "#F2EBDD" },
-        { "slug": "paper", "name": "Warm Paper", "color": "#FBF8F1" },
+        { "slug": "night", "name": "Midnight Blue", "color": "#151822" },
+        { "slug": "sea", "name": "Dusty Plum", "color": "#5A4658" },
+        { "slug": "coral", "name": "Burnt Sienna", "color": "#B85C45" },
+        { "slug": "sun", "name": "Champagne Gold", "color": "#D6BD91" },
+        { "slug": "stone", "name": "Warm Taupe", "color": "#E8DFD3" },
+        { "slug": "paper", "name": "Soft Ivory", "color": "#F5F1EA" },
         { "slug": "white", "name": "White", "color": "#FFFFFF" }
       ]
     },
@@ -57,28 +57,41 @@
               "src": ["file:./assets/fonts/Platypi-VariableFont_wght.woff2"]
             }
           ]
+        },
+        {
+          "fontFamily": "Unbounded, sans-serif",
+          "name": "Unbounded",
+          "slug": "unbounded",
+          "fontFace": [
+            {
+              "fontFamily": "Unbounded",
+              "fontStyle": "normal",
+              "fontWeight": "300 600",
+              "src": ["file:./assets/fonts/Unbounded-VariableFont_wght.ttf"]
+            }
+          ]
         }
       ],
       "fontSizes": [
-        { "slug": "xs", "size": "0.76rem", "name": "Caption" },
+        { "slug": "xs", "size": "0.72rem", "name": "Caption" },
         { "slug": "sm", "size": "0.9rem", "name": "Small" },
         { "slug": "md", "size": "1.05rem", "name": "Body" },
         { "slug": "lg", "size": "clamp(1.25rem, 2vw, 1.7rem)", "name": "Lead" },
-        { "slug": "xl", "size": "clamp(2.25rem, 5vw, 4.8rem)", "name": "Section" },
-        { "slug": "hero", "size": "clamp(3.8rem, 9vw, 8.8rem)", "name": "Hero" }
+        { "slug": "xl", "size": "clamp(2.8rem, 6vw, 6.4rem)", "name": "Section" },
+        { "slug": "hero", "size": "clamp(4.2rem, 10.5vw, 10.5rem)", "name": "Hero" }
       ]
     }
   },
   "styles": {
     "color": {
-      "background": "#FBF8F1",
-      "text": "#071C24"
+      "background": "#F5F1EA",
+      "text": "#151822"
     },
     "spacing": {
       "blockGap": "1.5rem",
       "padding": {
-        "left": "clamp(1.25rem, 4vw, 4rem)",
-        "right": "clamp(1.25rem, 4vw, 4rem)"
+        "left": "0",
+        "right": "0"
       }
     },
     "typography": {
@@ -93,17 +106,17 @@
           "fontFamily": "var(--wp--preset--font-family--platypi)",
           "fontWeight": "500",
           "lineHeight": "1.02",
-          "letterSpacing": "-0.035em"
+          "letterSpacing": "-0.045em"
         }
       },
       "link": {
-        "color": { "text": "#071C24" },
+        "color": { "text": "#151822" },
         "typography": { "textDecoration": "none" },
-        ":hover": { "color": { "text": "#E45B3C" } }
+        ":hover": { "color": { "text": "#B85C45" } }
       },
       "button": {
-        "color": { "background": "#E45B3C", "text": "#FFFFFF" },
-        "border": { "radius": "3px", "width": "0" },
+        "color": { "background": "#B85C45", "text": "#FFFFFF" },
+        "border": { "radius": "999px", "width": "0" },
         "spacing": { "padding": { "top": "1rem", "bottom": "1rem", "left": "1.5rem", "right": "1.5rem" } },
         "typography": { "fontSize": "0.78rem", "fontWeight": "700", "letterSpacing": "0.09em", "textTransform": "uppercase" }
       }

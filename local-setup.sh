@@ -25,7 +25,7 @@ if [ ! -f .env ]; then
 		printf '%s\n' 'WORDPRESS_ADMIN_USER=siteadmin'
 		printf 'WORDPRESS_ADMIN_PASSWORD=%s\n' "$admin_password"
 		printf '%s\n' 'WORDPRESS_ADMIN_EMAIL=admin@example.test'
-		printf '%s\n' "WORDPRESS_TITLE='Turkey Signature'"
+		printf '%s\n' "WORDPRESS_TITLE='Путешествие по Турции'"
 	} > .env
 
 	{
