@@ -9,6 +9,131 @@
  */
 
 $images_uri = get_theme_file_uri( 'assets/images' );
+$tours      = array(
+	array(
+		'image'      => 'meso.png',
+		'class'      => 'tour-card-mesopotamia',
+		'alt'        => 'Каменный город Месопотамии на востоке Турции',
+		'title'      => 'Месопотамия',
+		'kicker'     => 'Тематический тур · Восток Турции',
+		'lead'       => 'Турция напоминает шкатулку, в которую, если заглянуть, можно найти всё. Приглашаю вас в тематический тур на восток Турции. Восток звучит не только как ориентир: здесь действительно больше арабских ноток, несмотря на то, что в этом крае сохранилось много храмов, монастырей и крепостей византийских времён.',
+		'paragraphs' => array(
+			'Месопотамия — древнее место, будто спустившееся со страниц книги восточных сказок. Здесь находятся города-музеи под открытым небом. Несмотря на весьма бурную и богатую событиями историю, им удалось пронести сквозь века свой неповторимый архитектурный облик и уникальное многообразие различных культур, языков и религий.',
+			'Здесь сохранились старинные особняки, крепости, медресе, мечети и минареты, в антураже которых с удовольствием проводят съёмки целого ряда фильмов.',
+			'Кроме того, восточная кухня Турции славится своей уникальностью, и мы будем познавать её тайны, а также пробовать гастрономические изыски.',
+		),
+	),
+	array(
+		'image'      => 'karadeis.png',
+		'class'      => 'tour-card-karadeiz',
+		'alt'        => 'Чайные плантации, горное озеро и облака Карадениза',
+		'title'      => 'Карадеиз',
+		'kicker'     => 'Природный тур · Черноморье',
+		'lead'       => 'Путешествие на Карадениз поможет вам отключиться от суеты больших городов и курортов, а заодно откроет страну с необычного ракурса.',
+		'paragraphs' => array(
+			'Мы с вами отправимся на родину турецкого чая, уникальной черноморской кухни, национальных заповедников, объятых облаками гор, густых девственных самшитовых лесов, кристально чистых горных озёр, водопадов и бесконечных полей.',
+			'Грандиозные каньоны, альпийские пейзажи и горные озёра, скальные монастыри и памятники османской эпохи, аутентичные крепости и деревушки — черноморское побережье Турции способно удивить даже искушённых путешественников.',
+		),
+	),
+	array(
+		'image'      => 'skazka.png',
+		'class'      => 'tour-card-fairytale',
+		'alt'        => 'Турецкий кофе, восточная лавка и яхта на Босфоре',
+		'title'      => 'Восточная сказка',
+		'kicker'     => 'Атмосферный тур · Стамбул',
+		'lead'       => 'Погрузитесь в атмосферу восточной сказки, неспешной суеты и максимального комфорта. Наш тур — это погружение в совершенно другой мир, притягивающий своим неповторимым колоритом.',
+		'paragraphs' => array(
+			'Вы окунётесь в культуру и историю Османской империи, увидите средневековые мечети и минареты, заглянете в мастерские и антикварные лавки, научитесь готовить традиционный турецкий кофе.',
+			'Здесь воздух пропитан запахом кофе и специй, дворцы и мечети помнят султанов и женщин гаремов, а каждый район города скрывает интересные истории.',
+			'Вас ждут релакс на термальных водах и эксклюзивная прогулка на частной яхте класса люкс.',
+		),
+		'facts'      => array(
+			array( 'value' => '5/5', 'label' => 'Комфорт · уникальное жильё' ),
+			array( 'value' => '3/5', 'label' => 'Активность · средняя' ),
+			array( 'value' => 'До 8', 'label' => 'участников' ),
+			array( 'value' => '5 дней', 'label' => 'продолжительность' ),
+			array( 'value' => 'Русский', 'label' => 'язык тура' ),
+		),
+		'program'    => array(
+			array(
+				'title'      => 'День 1 · Встреча со Стамбулом',
+				'paragraphs' => array(
+					'Комфортабельный трансфер встретит вас в аэропорту и отвезёт в отель. Поскольку участники прилетают из разных городов, рекомендую прибыть в Стамбул не позднее 15:00, чтобы не терять первый день.',
+					'После заселения и небольшого отдыха отправимся на неспешную прогулку-знакомство с городом.',
+					'Вечером нас ждёт прогулка по Босфору на комфортабельной частной яхте. В качестве комплимента предложат бокал шампанского и лёгкие закуски. Первый закат в Стамбуле встретим очень романтично, а затем увидим город со стороны пролива — уже в ярких ночных огнях.',
+					'Завершить вечер предложу ужином в хорошем кафе с панорамным видом.',
+				),
+			),
+			array(
+				'title'      => 'День 2 · Нулевой километр и история города',
+				'paragraphs' => array(
+					'Этот день посвятим истории многовекового города. Отправимся в сердце исторического Стамбула — к месту, откуда в византийскую эпоху отсчитывали расстояния и где Константин Великий создавал новую столицу империи.',
+					'Увидим собор Святой Софии — грандиозный памятник Византии и один из главных образцов мировой архитектуры; Голубую мечеть с шестью минаретами; дворец Топкапы — многовековую резиденцию османских султанов; и Цистерну Базилику — впечатляющее подземное водохранилище Константинополя.',
+					'После обеда нас ждёт фотосессия с чайками. По желанию можно выбрать платья и костюмы в османском стиле. Затем посмотрим танец кружащихся дервишей.',
+					'Вечером предложу ужин в традиционном турецком ресторане, где национальные блюда готовят по собственным рецептам и подают с красивым панорамным видом.',
+				),
+			),
+			array(
+				'title'      => 'День 3 · Ремесленные кварталы и турецкий кофе',
+				'paragraphs' => array(
+					'Оставим парадные площади позади и отправимся в кварталы, где особенно хорошо чувствуется повседневная жизнь Стамбула: старые фасады, мастерские, маленькие галереи и антикварные лавки.',
+					'Познакомимся с традициями приготовления турецкого кофе: узнаем, как выбирают помол, работают с джезвой и читают настроение напитка. По пути сделаем остановки для фотографий и локальных вкусов.',
+					'Вечер оставим свободным — для прогулки, хамама, покупок или выбранного вместе ресторана.',
+				),
+			),
+			array(
+				'title'      => 'День 4 · Термальные воды и отдых',
+				'paragraphs' => array(
+					'После насыщенных городских дней сменим ритм и отправимся к термальным водам. Конкретную локацию выберем с учётом сезона и условий поездки.',
+					'Этот день — про восстановление, спокойствие и максимальный комфорт: время для термального комплекса, отдыха и неспешного общения.',
+					'Вернувшись в Стамбул, встретим вечер без спешки и подведём итоги путешествия за общим ужином.',
+				),
+			),
+			array(
+				'title'      => 'День 5 · Последнее утро и до скорой встречи',
+				'paragraphs' => array(
+					'После завтрака оставим время для последней прогулки, сувениров или любимого места, к которому захочется вернуться.',
+					'Выезд из отеля организуем в спокойном темпе, оставив необходимый запас времени на дорогу в аэропорт. Уезжаем с фотографиями, новыми знакомствами и своим личным Стамбулом.',
+				),
+			),
+		),
+		'price'      => array(
+			'old'      => '144 066 ₽',
+			'current'  => '102 904 ₽',
+			'discount' => '−29%',
+			'note'     => 'Стоимость указана по предоставленному материалу. Актуальность цены, состав включённых услуг и условия бронирования уточняются перед записью.',
+		),
+		'cta'        => 'Записаться на тур',
+	),
+	array(
+		'image'      => 'deti.png',
+		'class'      => 'tour-card-children',
+		'alt'        => 'Семья с детьми путешествует по Стамбулу',
+		'title'      => 'Тур для детей',
+		'kicker'     => 'Семейный тур · Стамбул',
+		'lead'       => 'Для тех, кто скучает по ярким путешествиям и желает провести выходные насыщенно, необычно и в весёлой компании. Детям нужно!',
+		'paragraphs' => array(
+			'Посмотрите на мир глазами ребёнка — он очень красив.',
+			'Дети способны открыть для нас красоту в мелочах, видеть волшебство в обыденном. Мы, родители, можем помочь им познакомиться с возможностями своего внутреннего мира, жить с распростёртой душой и стремиться навстречу новым открытиям. А значит — познавать мир, разглядывать его в разных ракурсах, открывать для себя новые горизонты и питаться тёплой, жизненной энергией от всего, что нас окружает.',
+			'Впечатления останутся яркими и незабываемыми!',
+		),
+	),
+	array(
+		'image'      => 'stambul.png',
+		'class'      => 'tour-card-istanbul',
+		'alt'        => 'Красный трамвай, Босфор и повседневная жизнь Стамбула',
+		'title'      => 'Многогранность Стамбула',
+		'kicker'     => 'Городской тур · Стамбул',
+		'lead'       => 'Стамбул манит, притягивает и влюбляет в себя каждого, кто хоть раз побывал в этом уникальном городе.',
+		'paragraphs' => array(
+			'Город мечты ждёт вас с широко распахнутыми лазурными объятиями Босфора, свежим бризом Золотого Рога, ароматами симитов на набережной и свежепойманной хамсы и ставриды, буйством цветущих каштанов и роз, перекличками азана с мечетей, звенящими трамваями, вездесущими кошками и прохладой парков.',
+			'Город, где восток встречается с западом, а древность переплетается с современностью. Стамбул — город с многовековой историей и богатой культурой, в котором Европа и Азия сливаются воедино.',
+			'В Стамбуле можно познакомиться с консервативными привычками и свободной светской молодёжью, сойти с ума от толп на Галатском мосту и насладиться одиночеством на нетуристической набережной.',
+			'Это великолепный город, который олицетворяет сочетание восточного очарования и западного утончённого стиля. Стамбул — это заботливые руки банщиц хамама, крепкий турецкий кофе, свежеиспечённая пахлава в медовом сиропе и приветливые жители города.',
+			'Погрузитесь в безумную атмосферу города, проживите незабываемые эмоции и наполните свою копилку яркими впечатлениями.',
+		),
+	),
+);
 ?>
 <!-- wp:group {"tagName":"main","align":"full","anchor":"start","className":"turkey-site","layout":{"type":"default"}} -->
 <main id="start" class="wp-block-group alignfull turkey-site">
@@ -42,25 +167,33 @@ $images_uri = get_theme_file_uri( 'assets/images' );
   <div class="wp-block-group alignfull journey-ribbon"><!-- wp:paragraph --><p>Стамбул <span>✦</span> Босфор <span>✦</span> Каппадокия <span>✦</span> Эгейское море <span>✦</span> Ликийское побережье <span>✦</span> Стамбул <span>✦</span> Босфор <span>✦</span> Каппадокия <span>✦</span></p><!-- /wp:paragraph --></div>
   <!-- /wp:group -->
 
-  <!-- wp:group {"align":"full","anchor":"impressions","className":"section-shell manifesto-section reveal-on-scroll","layout":{"type":"constrained"}} -->
-  <div id="impressions" class="wp-block-group alignfull section-shell manifesto-section reveal-on-scroll">
-    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"section-heading-grid"} -->
-    <div class="wp-block-columns alignwide are-vertically-aligned-top section-heading-grid">
-      <!-- wp:column {"verticalAlignment":"top"} --><div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Не посмотреть страну.<br><em>Прожить её.</em></h2><!-- /wp:heading --><!-- wp:paragraph {"fontSize":"lg","className":"section-intro"} --><p class="section-intro has-lg-font-size">Премиальность для нас — не показная роскошь, а внимание к ритму, деталям и вашему личному пространству.</p><!-- /wp:paragraph --></div><!-- /wp:column -->
+  <!-- wp:group {"align":"full","anchor":"impressions","className":"section-shell manifesto-section welcome-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="impressions" class="wp-block-group alignfull section-shell manifesto-section welcome-section reveal-on-scroll">
+    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"welcome-layout"} -->
+    <div class="wp-block-columns alignwide are-vertically-aligned-top welcome-layout">
+      <!-- wp:column {"verticalAlignment":"top","width":"64%","className":"welcome-visual"} -->
+      <div class="wp-block-column is-vertically-aligned-top welcome-visual" style="flex-basis:64%">
+        <!-- wp:group {"className":"manifesto-collage","layout":{"type":"grid","columnCount":12,"minimumColumnWidth":null}} -->
+        <div class="wp-block-group manifesto-collage">
+          <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-a"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-a"><img src="<?php echo esc_url( $images_uri . '/istanbul-breakfast.jpg' ); ?>" alt="Турецкий завтрак на улице Стамбула" /></figure><!-- /wp:image -->
+          <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-b"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-b"><img src="<?php echo esc_url( $images_uri . '/pamukkale-terraces.png' ); ?>" alt="Белые травертиновые террасы Памуккале" /></figure><!-- /wp:image -->
+          <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-c"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-c"><img src="<?php echo esc_url( $images_uri . '/galata-stairs-editorial.jpg' ); ?>" alt="Редакционный вид лестниц и улиц Галаты" /></figure><!-- /wp:image -->
+        </div>
+        <!-- /wp:group -->
+      </div>
+      <!-- /wp:column -->
+
+      <!-- wp:column {"verticalAlignment":"top","width":"36%","className":"welcome-copy"} -->
+      <div class="wp-block-column is-vertically-aligned-top welcome-copy" style="flex-basis:36%">
+        <!-- wp:heading {"fontSize":"xl","className":"welcome-title"} --><h2 class="wp-block-heading welcome-title has-xl-font-size">Приветствую вас, дорогие<br>путешественники</h2><!-- /wp:heading -->
+        <!-- wp:paragraph {"className":"welcome-text"} --><p class="welcome-text">и гости необыкновенного, многовекового города! Стамбул-великолепный город, который олицетворяет сочетание восточного очарования и западного утонченного стиля. Это место, где восток встречается с западом, и древность переплетается с современностью! Успешно занимаюсь туризмом более 20 лет, в том числе организацией и проведением как групповых, так индивидуальных туров. Стамбул занимает отдельное место в моем сердце. Благодаря знаниям и опыту работы, я смогу показать вам лучшие места в Стамбуле и открыть многие его секреты. И, конечно, мы обязательно прочувствуем удивительную атмосферу города и оценим его важный вклад в мировую культуру. Каждый из моих туристов - для меня дорогой гость. Поэтому я всегда адаптирую экскурсии с учетом ваших личных интересов и предпочтений.</p><!-- /wp:paragraph -->
+        <!-- wp:buttons {"className":"welcome-actions"} -->
+        <div class="wp-block-buttons welcome-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#route">Выбрать направление <span>↓</span></a></div><!-- /wp:button --></div>
+        <!-- /wp:buttons -->
+      </div>
+      <!-- /wp:column -->
     </div>
     <!-- /wp:columns -->
-
-    <!-- wp:group {"align":"wide","className":"manifesto-collage","layout":{"type":"grid","columnCount":12,"minimumColumnWidth":null}} -->
-    <div class="wp-block-group alignwide manifesto-collage">
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-a"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-a"><img src="<?php echo esc_url( $images_uri . '/istanbul-breakfast.jpg' ); ?>" alt="Турецкий завтрак на улице Стамбула" /></figure><!-- /wp:image -->
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-b"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-b"><img src="<?php echo esc_url( $images_uri . '/pamukkale-terraces.png' ); ?>" alt="Белые травертиновые террасы Памуккале" /></figure><!-- /wp:image -->
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"manifesto-image manifesto-image-c"} --><figure class="wp-block-image size-full manifesto-image manifesto-image-c"><img src="<?php echo esc_url( $images_uri . '/galata-stairs-editorial.jpg' ); ?>" alt="Редакционный вид лестниц и улиц Галаты" /></figure><!-- /wp:image -->
-    </div>
-    <!-- /wp:group -->
-
-    <!-- wp:group {"align":"wide","className":"manifesto-promise","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-    <div class="wp-block-group alignwide manifesto-promise"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Шесть дней.<br><em>Пространство для впечатлений.</em></h3><!-- /wp:heading --><!-- wp:paragraph --><p>Достаточно событий, чтобы почувствовать место. Достаточно воздуха, чтобы путешествие осталось вашим.</p><!-- /wp:paragraph --></div>
-    <!-- /wp:group -->
   </div>
   <!-- /wp:group -->
 
@@ -68,22 +201,92 @@ $images_uri = get_theme_file_uri( 'assets/images' );
   <div id="route" class="wp-block-group alignfull destination-section">
     <!-- wp:group {"className":"destination-sticky","layout":{"type":"default"}} -->
     <div class="wp-block-group destination-sticky">
-      <!-- wp:group {"align":"wide","className":"destination-heading","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-      <div class="wp-block-group alignwide destination-heading"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Одна страна.<br><em>Несколько состояний.</em></h2><!-- /wp:heading --></div><!-- /wp:group --><!-- wp:paragraph {"className":"destination-hint"} --><p class="destination-hint">Продолжайте прокрутку<br>для движения по маршруту →</p><!-- /wp:paragraph --></div>
+      <!-- wp:group {"align":"wide","className":"destination-topline","layout":{"type":"default"}} -->
+      <div class="wp-block-group alignwide destination-topline">
+        <!-- wp:group {"className":"destination-heading","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+        <div class="wp-block-group destination-heading"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Все туры</h2><!-- /wp:heading --></div><!-- /wp:group --></div>
+        <!-- /wp:group -->
+        <!-- wp:group {"className":"destination-progress","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+        <div class="wp-block-group destination-progress">
+          <!-- wp:paragraph {"className":"destination-arrow destination-arrow-prev"} --><p class="destination-arrow destination-arrow-prev">←</p><!-- /wp:paragraph -->
+          <!-- wp:group {"className":"destination-range","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+          <div class="wp-block-group destination-range"><!-- wp:separator {"className":"destination-slider"} --><hr class="wp-block-separator has-alpha-channel-opacity destination-slider"/><!-- /wp:separator --></div>
+          <!-- /wp:group -->
+          <!-- wp:paragraph {"className":"destination-arrow destination-arrow-next"} --><p class="destination-arrow destination-arrow-next">→</p><!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:group -->
+      </div>
       <!-- /wp:group -->
       <!-- wp:group {"className":"destination-viewport","layout":{"type":"default"}} -->
       <div class="wp-block-group destination-viewport">
         <!-- wp:group {"className":"destination-track","layout":{"type":"flex","flexWrap":"nowrap"}} -->
         <div class="wp-block-group destination-track">
-          <!-- wp:group {"className":"destination-card","layout":{"type":"default"}} --><div class="wp-block-group destination-card"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/istanbul-golden-hour.png' ); ?>" alt="Панорама Стамбула с воды" /></figure><!-- /wp:image --><!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:paragraph --><p>01 · Marmara</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Стамбул</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Город, где утро начинается на воде, а вечер — между двумя континентами.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:group -->
-          <!-- wp:group {"className":"destination-card","layout":{"type":"default"}} --><div class="wp-block-group destination-card"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/cappadocia-balloons.png' ); ?>" alt="Каппадокия на рассвете" /></figure><!-- /wp:image --><!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:paragraph --><p>02 · Anatolia</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Каппадокия</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Каменные долины, тишина рассвета и небо, которое становится частью маршрута.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:group -->
-          <!-- wp:group {"className":"destination-card","layout":{"type":"default"}} --><div class="wp-block-group destination-card"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/kaputas-coast.png' ); ?>" alt="Бирюзовая бухта Капуташ" /></figure><!-- /wp:image --><!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:paragraph --><p>03 · Mediterranean</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Ликийский берег</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Сосновые склоны, прозрачная вода и маленькие бухты без городского шума.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:group -->
-          <!-- wp:group {"className":"destination-card","layout":{"type":"default"}} --><div class="wp-block-group destination-card"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/ephesus-library.png' ); ?>" alt="Античная библиотека в Эфесе" /></figure><!-- /wp:image --><!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:paragraph --><p>04 · Aegean</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Эгейская античность</h3><!-- /wp:heading --><!-- wp:paragraph --><p>История без музейной дистанции — камень, свет и города, пережившие эпохи.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:group -->
+<?php foreach ( $tours as $tour ) : ?>
+          <!-- wp:group {"className":"destination-card <?php echo esc_attr( $tour['class'] ); ?>","layout":{"type":"default"}} -->
+          <div class="wp-block-group destination-card <?php echo esc_attr( $tour['class'] ); ?>">
+            <!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/' . $tour['image'] ); ?>" alt="<?php echo esc_attr( $tour['alt'] ); ?>" /></figure><!-- /wp:image -->
+            <!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading"><?php echo esc_html( $tour['title'] ); ?></h3><!-- /wp:heading --></div><!-- /wp:group -->
+            <!-- wp:buttons {"className":"tour-details-trigger"} --><div class="wp-block-buttons tour-details-trigger"><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#">Подробнее</a></div><!-- /wp:button --></div><!-- /wp:buttons -->
+          </div>
+          <!-- /wp:group -->
+<?php endforeach; ?>
         </div>
         <!-- /wp:group -->
       </div>
       <!-- /wp:group -->
-      <!-- wp:group {"align":"wide","className":"destination-progress","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} --><div class="wp-block-group alignwide destination-progress"><!-- wp:paragraph --><p>01</p><!-- /wp:paragraph --><!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator --><!-- wp:paragraph --><p>04</p><!-- /wp:paragraph --></div><!-- /wp:group -->
+      <!-- wp:group {"anchor":"tour-details","className":"tour-details-library","layout":{"type":"grid","columnCount":2,"minimumColumnWidth":null}} -->
+      <div id="tour-details" class="wp-block-group tour-details-library">
+<?php foreach ( $tours as $tour ) : ?>
+        <!-- wp:group {"className":"tour-details","layout":{"type":"constrained"}} -->
+        <div class="wp-block-group tour-details">
+          <!-- wp:paragraph {"className":"tour-detail-kicker"} --><p class="tour-detail-kicker"><?php echo esc_html( $tour['kicker'] ); ?></p><!-- /wp:paragraph -->
+          <!-- wp:heading {"level":3} --><h3 class="wp-block-heading"><?php echo esc_html( $tour['title'] ); ?></h3><!-- /wp:heading -->
+          <!-- wp:paragraph {"className":"tour-detail-lead"} --><p class="tour-detail-lead"><?php echo esc_html( $tour['lead'] ); ?></p><!-- /wp:paragraph -->
+<?php foreach ( $tour['paragraphs'] as $paragraph ) : ?>
+          <!-- wp:paragraph --><p><?php echo esc_html( $paragraph ); ?></p><!-- /wp:paragraph -->
+<?php endforeach; ?>
+<?php if ( ! empty( $tour['facts'] ) ) : ?>
+          <!-- wp:group {"className":"tour-detail-facts tour-detail-facts--five","layout":{"type":"grid","columnCount":5,"minimumColumnWidth":null}} -->
+          <div class="wp-block-group tour-detail-facts tour-detail-facts--five">
+<?php foreach ( $tour['facts'] as $fact ) : ?>
+            <!-- wp:paragraph --><p><strong><?php echo esc_html( $fact['value'] ); ?></strong><br><?php echo esc_html( $fact['label'] ); ?></p><!-- /wp:paragraph -->
+<?php endforeach; ?>
+          </div>
+          <!-- /wp:group -->
+<?php endif; ?>
+<?php if ( ! empty( $tour['program'] ) ) : ?>
+          <!-- wp:group {"className":"tour-detail-program","layout":{"type":"constrained"}} -->
+          <div class="wp-block-group tour-detail-program">
+            <!-- wp:heading {"level":4} --><h4 class="wp-block-heading">Программа тура</h4><!-- /wp:heading -->
+<?php foreach ( $tour['program'] as $day ) : ?>
+            <!-- wp:group {"className":"tour-detail-day","layout":{"type":"constrained"}} -->
+            <div class="wp-block-group tour-detail-day">
+              <!-- wp:heading {"level":4} --><h4 class="wp-block-heading"><?php echo esc_html( $day['title'] ); ?></h4><!-- /wp:heading -->
+<?php foreach ( $day['paragraphs'] as $day_paragraph ) : ?>
+              <!-- wp:paragraph --><p><?php echo esc_html( $day_paragraph ); ?></p><!-- /wp:paragraph -->
+<?php endforeach; ?>
+            </div>
+            <!-- /wp:group -->
+<?php endforeach; ?>
+          </div>
+          <!-- /wp:group -->
+<?php endif; ?>
+<?php if ( ! empty( $tour['price'] ) ) : ?>
+          <!-- wp:group {"className":"tour-detail-price","layout":{"type":"constrained"}} -->
+          <div class="wp-block-group tour-detail-price">
+            <!-- wp:paragraph {"className":"tour-detail-price-label"} --><p class="tour-detail-price-label">Стоимость тура</p><!-- /wp:paragraph -->
+            <!-- wp:paragraph {"className":"tour-detail-price-old"} --><p class="tour-detail-price-old"><s><?php echo esc_html( $tour['price']['old'] ); ?></s> <mark><?php echo esc_html( $tour['price']['discount'] ); ?></mark></p><!-- /wp:paragraph -->
+            <!-- wp:paragraph {"className":"tour-detail-price-current"} --><p class="tour-detail-price-current"><strong><?php echo esc_html( $tour['price']['current'] ); ?></strong></p><!-- /wp:paragraph -->
+            <!-- wp:paragraph {"className":"tour-detail-note"} --><p class="tour-detail-note"><?php echo esc_html( $tour['price']['note'] ); ?></p><!-- /wp:paragraph -->
+          </div>
+          <!-- /wp:group -->
+<?php endif; ?>
+          <!-- wp:buttons {"className":"tour-detail-cta"} --><div class="wp-block-buttons tour-detail-cta"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact"><?php echo esc_html( $tour['cta'] ?? 'Обсудить этот тур' ); ?></a></div><!-- /wp:button --></div><!-- /wp:buttons -->
+        </div>
+        <!-- /wp:group -->
+<?php endforeach; ?>
+      </div>
+      <!-- /wp:group -->
     </div>
     <!-- /wp:group -->
   </div>
