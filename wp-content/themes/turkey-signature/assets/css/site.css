@@ -1255,7 +1255,7 @@ html.ts-menu-open .site-header::after {
   position: absolute;
   z-index: 2;
   right: clamp(12rem, 12vw, 13rem);
-  bottom: clamp(1.15rem, 2vw, 1.75rem);
+  bottom: calc(clamp(1.15rem, 2vw, 1.75rem) + 0.5rem);
   left: clamp(1.25rem, 3vw, 2.5rem);
   min-width: 0;
   color: var(--ts-white);
@@ -1265,23 +1265,33 @@ html.ts-menu-open .site-header::after {
   display: inline-block;
   max-width: 100%;
   margin: 0;
-  background: linear-gradient(105deg, #fffaf0 0%, #f4ddb0 42%, #d8ad6b 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: #f4ddb0;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 1px rgba(18, 13, 11, 0.7)) drop-shadow(0 12px 24px rgba(5, 7, 13, 0.6));
+  padding: 0.04em 0 0.18em;
+  overflow: visible;
+  background: none;
+  color: #f2d9a8;
+  -webkit-text-fill-color: #f2d9a8;
+  filter: none;
   font-family: "Prata", Georgia, serif;
   font-size: clamp(2.2rem, 3.6vw, 4rem);
   font-weight: 400;
   letter-spacing: -0.038em;
-  line-height: 1.02;
+  line-height: 1.1;
+  text-shadow: none;
   text-wrap: balance;
-  -webkit-text-stroke: 0.25px rgba(255, 249, 235, 0.34);
+  -webkit-text-stroke: 0;
 }
 
 .tour-card-istanbul .destination-card-copy h3 {
   font-size: clamp(2rem, 2.5vw, 2.75rem);
+}
+
+.tour-card-cappadocia-comfort .destination-card-copy h3 {
+  font-size: clamp(1.9rem, 2.35vw, 2.65rem);
+}
+
+.tour-card-city-box .destination-card-copy h3,
+.tour-card-empires .destination-card-copy h3 {
+  font-size: clamp(1.9rem, 2.45vw, 2.75rem);
 }
 
 .tour-details-trigger {
@@ -1687,7 +1697,7 @@ html.tour-modal-open body {
 @media (max-width: 780px) {
   .destination-card-copy {
     right: 10.75rem;
-    bottom: 1.25rem;
+    bottom: 1.75rem;
   }
 
   .destination-card-copy h3 {
@@ -1697,6 +1707,15 @@ html.tour-modal-open body {
 
   .tour-card-istanbul .destination-card-copy h3 {
     font-size: clamp(1.15rem, 5vw, 1.35rem);
+  }
+
+  .tour-card-cappadocia-comfort .destination-card-copy h3 {
+    font-size: clamp(1.08rem, 4.7vw, 1.28rem);
+  }
+
+  .tour-card-city-box .destination-card-copy h3,
+  .tour-card-empires .destination-card-copy h3 {
+    font-size: clamp(1.08rem, 4.8vw, 1.3rem);
   }
 
   .tour-card-children .destination-card-copy h3 {
