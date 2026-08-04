@@ -18,6 +18,7 @@ if [ ! -f .env ]; then
 	{
 		printf '%s\n' 'COMPOSE_PROJECT_NAME=wordpress_site3'
 		printf '%s\n' 'WORDPRESS_PORT=8082'
+		printf '%s\n' 'MAILPIT_PORT=8026'
 		printf '%s\n' 'WORDPRESS_DB_NAME=wordpress_site3'
 		printf '%s\n' 'WORDPRESS_DB_USER=wp_site3'
 		printf 'WORDPRESS_DB_PASSWORD=%s\n' "$db_password"
@@ -25,7 +26,7 @@ if [ ! -f .env ]; then
 		printf '%s\n' 'WORDPRESS_ADMIN_USER=siteadmin'
 		printf 'WORDPRESS_ADMIN_PASSWORD=%s\n' "$admin_password"
 		printf '%s\n' 'WORDPRESS_ADMIN_EMAIL=admin@example.test'
-		printf '%s\n' "WORDPRESS_TITLE='Путешествие по Турции'"
+		printf '%s\n' "WORDPRESS_TITLE='Авторские туры'"
 	} > .env
 
 	{
@@ -74,7 +75,13 @@ if ! docker compose --profile tools run --rm wpcli wp core is-installed --allow-
 fi
 
 docker compose --profile tools run --rm wpcli wp theme activate turkey-signature --allow-root
+docker compose --profile tools run --rm wpcli wp plugin activate turkey-signature-contact --allow-root
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-conversion-tour-pages-v27.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-v28.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-contact-trigger-validation-v29.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-content-v30.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-design-refinement-v31.php --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogname "$WORDPRESS_TITLE" --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogdescription 'Авторские путешествия по Турции' --allow-root
 docker compose --profile tools run --rm wpcli wp option update timezone_string 'Europe/Moscow' --allow-root
@@ -84,4 +91,5 @@ docker compose --profile tools run --rm wpcli wp rewrite flush --hard --allow-ro
 printf '%s\n' 'WordPress is ready.'
 printf 'Site: http://localhost:%s/\n' "$WORDPRESS_PORT"
 printf 'Admin: http://localhost:%s/wp-admin/\n' "$WORDPRESS_PORT"
+printf 'Test mail: http://localhost:%s/\n' "${MAILPIT_PORT:-8026}"
 printf '%s\n' 'Credentials are stored in .local-admin.txt'

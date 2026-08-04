@@ -35,4 +35,4 @@ if ($LASTEXITCODE -ne 0) {
     throw 'The static page export failed.'
 }
 
-Write-Host 'GitHub Pages snapshot is ready in index.html.' -ForegroundColor Green
+Write-Host 'GitHub Pages snapshots are ready in index.html and static-pages/.' -ForegroundColor Green

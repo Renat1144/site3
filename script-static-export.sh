@@ -32,4 +32,4 @@ echo 'Starting WordPress for the static export...'
     --source-url="http://localhost:${wordpress_port}" \
     --output=/var/www/html/index.html
 
-echo 'GitHub Pages snapshot is ready in index.html.'
+echo 'GitHub Pages snapshots are ready in index.html and static-pages/.'

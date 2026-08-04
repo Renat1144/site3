@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "turkey-signature/contact-form",
+  "version": "1.3.0",
+  "title": "Форма связи",
+  "category": "widgets",
+  "icon": "email-alt",
+  "description": "Редактируемая форма заявки с модальным окном.",
+  "textdomain": "turkey-signature-contact",
+  "attributes": {
+    "formTitle": { "type": "string", "default": "Обсудим вашу поездку" },
+    "formText": { "type": "string", "default": "Оставьте контакты — поможем выбрать маршрут и ответим на вопросы без навязчивых звонков." },
+    "nameLabel": { "type": "string", "default": "Ваше имя" },
+    "emailLabel": { "type": "string", "default": "E-mail (необязательно)" },
+    "phoneLabel": { "type": "string", "default": "Контактный телефон" },
+    "consentText": { "type": "string", "default": "Я согласен(на) на обработку данных для ответа на заявку." },
+    "submitLabel": { "type": "string", "default": "Перезвоните мне" },
+    "successTitle": { "type": "string", "default": "Спасибо за вашу заявку" },
+    "successText": { "type": "string", "default": "В ближайшее время мы с вами свяжемся." }
+  },
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false
+  },
+  "style": "file:./assets/contact.css",
+  "viewScript": "file:./assets/contact.js"
+}

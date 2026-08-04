@@ -12,6 +12,7 @@ $images_uri = get_theme_file_uri( 'assets/images' );
 $tours      = array(
 	array(
 		'image'      => 'meso.png',
+		'slug'       => 'mesopotamiya',
 		'class'      => 'tour-card-mesopotamia',
 		'alt'        => 'Каменный город Месопотамии на востоке Турции',
 		'title'      => 'Месопотамия',
@@ -25,6 +26,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'karadeis.png',
+		'slug'       => 'karadeiz',
 		'class'      => 'tour-card-karadeiz',
 		'alt'        => 'Чайные плантации, горное озеро и облака Карадениза',
 		'title'      => 'Карадеиз',
@@ -37,6 +39,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'skazka.png',
+		'slug'       => 'vostochnaya-skazka',
 		'class'      => 'tour-card-fairytale',
 		'alt'        => 'Турецкий кофе, восточная лавка и яхта на Босфоре',
 		'title'      => 'Восточная сказка',
@@ -103,10 +106,12 @@ $tours      = array(
 			'discount' => '−29%',
 			'note'     => 'Стоимость указана по предоставленному материалу. Актуальность цены, состав включённых услуг и условия бронирования уточняются перед записью.',
 		),
-		'cta'        => 'Записаться на тур',
+		'card_facts' => array( '5 дней', 'До 8 человек', '102 904 ₽' ),
+		'cta'        => 'Оставить заявку',
 	),
 	array(
 		'image'      => 'deti.png',
+		'slug'       => 'tur-dlya-detey',
 		'class'      => 'tour-card-children',
 		'alt'        => 'Семья с детьми путешествует по Стамбулу',
 		'title'      => 'Тур для детей',
@@ -120,6 +125,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'stambul.png',
+		'slug'       => 'mnogogrannost-stambula',
 		'class'      => 'tour-card-istanbul',
 		'alt'        => 'Красный трамвай, Босфор и повседневная жизнь Стамбула',
 		'title'      => 'Многогранность Стамбула',
@@ -135,6 +141,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'kapadokia.png',
+		'slug'       => 'stambul-i-kappadokiya',
 		'class'      => 'tour-card-cappadocia-comfort',
 		'alt'        => 'Пара встречает рассвет с завтраком и воздушными шарами в Каппадокии',
 		'title'      => 'Стамбул и Каппадокия: комфорт-тур',
@@ -148,6 +155,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'deti2.png',
+		'slug'       => 'gorod-shkatulka-dlya-detey',
 		'class'      => 'tour-card-city-box',
 		'alt'        => 'Дети кормят чаек во время прогулки по Босфору',
 		'title'      => 'Город-шкатулка для детей',
@@ -160,6 +168,7 @@ $tours      = array(
 	),
 	array(
 		'image'      => 'stambul2.png',
+		'slug'       => 'sliyanie-imperiy-stambul',
 		'class'      => 'tour-card-empires',
 		'alt'        => 'Собор Святой Софии, Босфор и силуэт Стамбула в золотой час',
 		'title'      => 'Слияние империй: Стамбул',
@@ -182,6 +191,15 @@ $tours      = array(
 		),
 	),
 );
+$primary_tour = $tours[2];
+$other_tours  = array_values(
+	array_filter(
+		$tours,
+		static function ( array $tour ): bool {
+			return 'vostochnaya-skazka' !== $tour['slug'];
+		}
+	)
+);
 ?>
 <!-- wp:group {"tagName":"main","align":"full","anchor":"start","className":"turkey-site","layout":{"type":"default"}} -->
 <main id="start" class="wp-block-group alignfull turkey-site">
@@ -197,12 +215,12 @@ $tours      = array(
     <!-- /wp:group -->
     <!-- wp:group {"align":"wide","className":"hero-stage","layout":{"type":"constrained"}} -->
     <div class="wp-block-group alignwide hero-stage">
-      <!-- wp:heading {"level":1,"fontSize":"hero","className":"hero-title"} --><h1 class="wp-block-heading hero-title has-hero-font-size">Турция,<br><em>которую</em><br>чувствуют.</h1><!-- /wp:heading -->
+      <!-- wp:heading {"level":1,"fontSize":"hero","className":"hero-title hero-title-brand"} --><h1 class="wp-block-heading hero-title hero-title-brand has-hero-font-size">Авторские туры<br><em>по Турции</em></h1><!-- /wp:heading -->
       <!-- wp:group {"className":"hero-bottom","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
       <div class="wp-block-group hero-bottom">
-        <!-- wp:paragraph {"fontSize":"lg","className":"hero-lead"} --><p class="hero-lead has-lg-font-size">Не коллекция достопримечательностей, а путешествие с правильным ритмом: вода, город, вкус и места, которые раскрываются не сразу.</p><!-- /wp:paragraph -->
+        <!-- wp:group {"className":"hero-copy","layout":{"type":"constrained"}} --><div class="wp-block-group hero-copy"><!-- wp:paragraph {"fontSize":"lg","className":"hero-lead"} --><p class="hero-lead has-lg-font-size">Продуманные маршруты по Стамбулу, Каппадокии и другим регионам — с комфортным ритмом, личным сопровождением и местами, которые редко входят в обычные программы.</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"hero-assurance"} --><p class="hero-assurance">Оставьте контакты — поможем выбрать подходящий маршрут и ответим на вопросы.</p><!-- /wp:paragraph --></div><!-- /wp:group -->
         <!-- wp:buttons {"className":"hero-actions"} -->
-        <div class="wp-block-buttons hero-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#dates">Посмотреть даты <span>↗</span></a></div><!-- /wp:button --><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#route">Почувствовать маршрут</a></div><!-- /wp:button --></div>
+        <div class="wp-block-buttons hero-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact-form">Подобрать тур <span>↗</span></a></div><!-- /wp:button --><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#primary-tour">Смотреть главный тур</a></div><!-- /wp:button --></div>
         <!-- /wp:buttons -->
       </div>
       <!-- /wp:group -->
@@ -211,8 +229,36 @@ $tours      = array(
   </div>
   <!-- /wp:group -->
 
-  <!-- wp:group {"align":"full","className":"journey-ribbon","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-  <div class="wp-block-group alignfull journey-ribbon"><!-- wp:paragraph --><p>Стамбул <span>✦</span> Босфор <span>✦</span> Каппадокия <span>✦</span> Эгейское море <span>✦</span> Ликийское побережье <span>✦</span> Стамбул <span>✦</span> Босфор <span>✦</span> Каппадокия <span>✦</span></p><!-- /wp:paragraph --></div>
+  <!-- wp:group {"align":"full","anchor":"primary-tour","className":"section-shell primary-tour-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="primary-tour" class="wp-block-group alignfull section-shell primary-tour-section reveal-on-scroll">
+    <!-- wp:columns {"align":"wide","verticalAlignment":"stretch","className":"primary-tour-layout"} -->
+    <div class="wp-block-columns alignwide are-vertically-aligned-stretch primary-tour-layout">
+      <!-- wp:column {"verticalAlignment":"stretch","width":"58%","className":"primary-tour-visual"} --><div class="wp-block-column is-vertically-aligned-stretch primary-tour-visual" style="flex-basis:58%"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/' . $primary_tour['image'] ); ?>" alt="<?php echo esc_attr( $primary_tour['alt'] ); ?>" /></figure><!-- /wp:image --></div><!-- /wp:column -->
+      <!-- wp:column {"verticalAlignment":"stretch","className":"primary-tour-copy"} -->
+      <div class="wp-block-column is-vertically-aligned-stretch primary-tour-copy">
+        <!-- wp:paragraph {"className":"eyebrow primary-tour-eyebrow"} --><p class="eyebrow primary-tour-eyebrow">Главный маршрут · Стамбул</p><!-- /wp:paragraph -->
+        <!-- wp:heading {"level":2,"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Восточная<br><em>сказка.</em></h2><!-- /wp:heading -->
+        <!-- wp:paragraph {"className":"primary-tour-lead"} --><p class="primary-tour-lead"><?php echo esc_html( $primary_tour['lead'] ); ?></p><!-- /wp:paragraph -->
+        <!-- wp:group {"className":"primary-tour-story","layout":{"type":"constrained"}} --><div class="wp-block-group primary-tour-story">
+<?php foreach ( $primary_tour['paragraphs'] as $tour_paragraph ) : ?>
+          <!-- wp:paragraph --><p><?php echo esc_html( $tour_paragraph ); ?></p><!-- /wp:paragraph -->
+<?php endforeach; ?>
+        </div><!-- /wp:group -->
+      </div>
+      <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+    <!-- wp:group {"align":"wide","className":"primary-tour-footer","layout":{"type":"default"}} --><div class="wp-block-group alignwide primary-tour-footer">
+        <!-- wp:group {"className":"primary-tour-facts","layout":{"type":"grid","columnCount":5,"minimumColumnWidth":null}} --><div class="wp-block-group primary-tour-facts">
+          <!-- wp:paragraph --><p><strong>5 дней</strong><span>продолжительность</span></p><!-- /wp:paragraph -->
+          <!-- wp:paragraph --><p><strong>До 8</strong><span>участников</span></p><!-- /wp:paragraph -->
+          <!-- wp:paragraph --><p><strong>5/5</strong><span>уровень комфорта</span></p><!-- /wp:paragraph -->
+          <!-- wp:paragraph --><p><strong>3/5</strong><span>средняя активность</span></p><!-- /wp:paragraph -->
+          <!-- wp:paragraph {"className":"primary-tour-fact-wide"} --><p class="primary-tour-fact-wide"><strong>Русский</strong><span>язык тура</span></p><!-- /wp:paragraph -->
+        </div><!-- /wp:group -->
+        <!-- wp:buttons {"className":"primary-tour-actions","layout":{"type":"flex","justifyContent":"right"}} --><div class="wp-block-buttons primary-tour-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#program">Смотреть программу <span>↓</span></a></div><!-- /wp:button --><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#contact-form">Оставить заявку</a></div><!-- /wp:button --></div><!-- /wp:buttons -->
+    </div><!-- /wp:group -->
+  </div>
   <!-- /wp:group -->
 
   <!-- wp:group {"align":"full","anchor":"impressions","className":"section-shell manifesto-section welcome-section reveal-on-scroll","layout":{"type":"constrained"}} -->
@@ -236,8 +282,57 @@ $tours      = array(
         <!-- wp:heading {"fontSize":"xl","className":"welcome-title"} --><h2 class="wp-block-heading welcome-title has-xl-font-size">Приветствую вас, дорогие<br>путешественники</h2><!-- /wp:heading -->
         <!-- wp:paragraph {"className":"welcome-text"} --><p class="welcome-text">и гости необыкновенного, многовекового города! Стамбул-великолепный город, который олицетворяет сочетание восточного очарования и западного утонченного стиля. Это место, где восток встречается с западом, и древность переплетается с современностью! Успешно занимаюсь туризмом более 20 лет, в том числе организацией и проведением как групповых, так индивидуальных туров. Стамбул занимает отдельное место в моем сердце. Благодаря знаниям и опыту работы, я смогу показать вам лучшие места в Стамбуле и открыть многие его секреты. И, конечно, мы обязательно прочувствуем удивительную атмосферу города и оценим его важный вклад в мировую культуру. Каждый из моих туристов - для меня дорогой гость. Поэтому я всегда адаптирую экскурсии с учетом ваших личных интересов и предпочтений.</p><!-- /wp:paragraph -->
         <!-- wp:buttons {"className":"welcome-actions"} -->
-        <div class="wp-block-buttons welcome-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#route">Выбрать направление <span>↓</span></a></div><!-- /wp:button --></div>
+        <div class="wp-block-buttons welcome-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#program">Посмотреть программу <span>↓</span></a></div><!-- /wp:button --></div>
         <!-- /wp:buttons -->
+      </div>
+      <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+  </div>
+  <!-- /wp:group -->
+
+  <!-- wp:group {"align":"full","anchor":"program","className":"section-shell program-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="program" class="wp-block-group alignfull section-shell program-section reveal-on-scroll">
+    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"program-grid"} -->
+    <div class="wp-block-columns alignwide are-vertically-aligned-top program-grid">
+      <!-- wp:column {"verticalAlignment":"top","width":"46%","className":"program-visual"} --><div class="wp-block-column is-vertically-aligned-top program-visual" style="flex-basis:46%"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/turquoise-yacht.png' ); ?>" alt="Яхта у побережья Турции" /></figure><!-- /wp:image --></div><!-- /wp:column -->
+      <!-- wp:column {"verticalAlignment":"top","className":"program-copy"} -->
+      <div class="wp-block-column is-vertically-aligned-top program-copy">
+        <!-- wp:paragraph {"className":"eyebrow program-eyebrow"} --><p class="eyebrow program-eyebrow">Программа · Восточная сказка</p><!-- /wp:paragraph -->
+        <!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Пять дней.<br><em>Один живой Стамбул.</em></h2><!-- /wp:heading -->
+        <!-- wp:paragraph {"className":"program-intro"} --><p class="program-intro">От первой встречи с Босфором до последнего спокойного утра — программа сохраняет баланс истории, локальных впечатлений и времени для отдыха.</p><!-- /wp:paragraph -->
+        <!-- wp:group {"className":"program-list","layout":{"type":"constrained"}} -->
+        <div class="wp-block-group program-list">
+<?php foreach ( $primary_tour['program'] as $day_index => $day ) : ?>
+          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span><?php echo esc_html( sprintf( '%02d', $day_index + 1 ) ); ?></span> <?php echo esc_html( preg_replace( '/^День\s+\d+\s+·\s*/u', '', $day['title'] ) ); ?></summary>
+<?php foreach ( $day['paragraphs'] as $day_paragraph ) : ?>
+            <!-- wp:paragraph --><p><?php echo esc_html( $day_paragraph ); ?></p><!-- /wp:paragraph -->
+<?php endforeach; ?>
+          </details><!-- /wp:details -->
+<?php endforeach; ?>
+        </div>
+        <!-- /wp:group -->
+      </div>
+      <!-- /wp:column -->
+    </div>
+    <!-- /wp:columns -->
+  </div>
+  <!-- /wp:group -->
+
+  <!-- wp:group {"align":"full","anchor":"dates","className":"dates-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="dates" class="wp-block-group alignfull dates-section reveal-on-scroll">
+    <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"dates-background"} --><figure class="wp-block-image size-full dates-background"><img src="<?php echo esc_url( $images_uri . '/nemrut-sunrise.png' ); ?>" alt="Рассвет на горе Немрут" /></figure><!-- /wp:image -->
+    <!-- wp:columns {"align":"wide","verticalAlignment":"stretch","className":"dates-grid"} -->
+    <div class="wp-block-columns alignwide are-vertically-aligned-stretch dates-grid">
+      <!-- wp:column {"verticalAlignment":"stretch","width":"48%","className":"dates-intro"} --><div class="wp-block-column is-vertically-aligned-stretch dates-intro" style="flex-basis:48%"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Восточная<br><em>сказка.</em></h2><!-- /wp:heading --><!-- wp:paragraph --><p>Пять дней в Стамбуле с программой, личным сопровождением и камерной группой до восьми человек.</p><!-- /wp:paragraph --></div><!-- /wp:column -->
+      <!-- wp:column {"verticalAlignment":"stretch","className":"offer-card"} -->
+      <div class="wp-block-column is-vertically-aligned-stretch offer-card">
+        <!-- wp:group {"className":"offer-top","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group offer-top"><!-- wp:paragraph {"className":"offer-status"} --><p class="offer-status">Даты уточняются</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>5 дней · до 8 участников</p><!-- /wp:paragraph --></div><!-- /wp:group -->
+        <!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Стоимость тура</h3><!-- /wp:heading -->
+        <!-- wp:group {"className":"offer-price-row","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group offer-price-row"><!-- wp:paragraph {"className":"offer-price"} --><p class="offer-price"><?php echo esc_html( $primary_tour['price']['current'] ); ?></p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"offer-price-old"} --><p class="offer-price-old"><s><?php echo esc_html( $primary_tour['price']['old'] ); ?></s> <mark><?php echo esc_html( $primary_tour['price']['discount'] ); ?></mark></p><!-- /wp:paragraph --></div><!-- /wp:group -->
+        <!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->
+        <!-- wp:paragraph {"className":"offer-note"} --><p class="offer-note"><?php echo esc_html( $primary_tour['price']['note'] ); ?></p><!-- /wp:paragraph -->
+        <!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button {"width":100} --><div class="wp-block-button has-custom-width wp-block-button__width-100"><a class="wp-block-button__link wp-element-button" href="#contact-form">Оставить заявку <span>↗</span></a></div><!-- /wp:button --></div><!-- /wp:buttons -->
       </div>
       <!-- /wp:column -->
     </div>
@@ -249,134 +344,49 @@ $tours      = array(
   <div id="route" class="wp-block-group alignfull destination-section">
     <!-- wp:group {"className":"destination-sticky","layout":{"type":"default"}} -->
     <div class="wp-block-group destination-sticky">
-      <!-- wp:group {"align":"wide","className":"destination-topline","layout":{"type":"default"}} -->
-      <div class="wp-block-group alignwide destination-topline">
-        <!-- wp:group {"className":"destination-heading","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-        <div class="wp-block-group destination-heading"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Все туры</h2><!-- /wp:heading --></div><!-- /wp:group --></div>
-        <!-- /wp:group -->
-        <!-- wp:group {"className":"destination-progress","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-        <div class="wp-block-group destination-progress">
-          <!-- wp:paragraph {"className":"destination-arrow destination-arrow-prev"} --><p class="destination-arrow destination-arrow-prev">←</p><!-- /wp:paragraph -->
-          <!-- wp:group {"className":"destination-range","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-          <div class="wp-block-group destination-range"><!-- wp:separator {"className":"destination-slider"} --><hr class="wp-block-separator has-alpha-channel-opacity destination-slider"/><!-- /wp:separator --></div>
-          <!-- /wp:group -->
-          <!-- wp:paragraph {"className":"destination-arrow destination-arrow-next"} --><p class="destination-arrow destination-arrow-next">→</p><!-- /wp:paragraph -->
-        </div>
-        <!-- /wp:group -->
-      </div>
-      <!-- /wp:group -->
-      <!-- wp:group {"className":"destination-viewport","layout":{"type":"default"}} -->
-      <div class="wp-block-group destination-viewport">
-        <!-- wp:group {"className":"destination-track","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-        <div class="wp-block-group destination-track">
-<?php foreach ( $tours as $tour ) : ?>
+      <!-- wp:group {"align":"wide","className":"destination-topline","layout":{"type":"default"}} --><div class="wp-block-group alignwide destination-topline"><!-- wp:group {"className":"destination-heading","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group destination-heading"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Другие авторские туры</h2><!-- /wp:heading --></div><!-- /wp:group --></div><!-- /wp:group --></div><!-- /wp:group -->
+      <!-- wp:group {"className":"destination-viewport","layout":{"type":"default"}} --><div class="wp-block-group destination-viewport">
+        <!-- wp:group {"className":"destination-track destination-track-other","layout":{"type":"grid","columnCount":2,"minimumColumnWidth":null}} --><div class="wp-block-group destination-track destination-track-other">
+<?php foreach ( $other_tours as $tour ) : ?>
           <!-- wp:group {"className":"destination-card <?php echo esc_attr( $tour['class'] ); ?>","layout":{"type":"default"}} -->
           <div class="wp-block-group destination-card <?php echo esc_attr( $tour['class'] ); ?>">
             <!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/' . $tour['image'] ); ?>" alt="<?php echo esc_attr( $tour['alt'] ); ?>" /></figure><!-- /wp:image -->
             <!-- wp:group {"className":"destination-card-copy","layout":{"type":"constrained"}} --><div class="wp-block-group destination-card-copy"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading"><?php echo esc_html( $tour['title'] ); ?></h3><!-- /wp:heading --></div><!-- /wp:group -->
-            <!-- wp:buttons {"className":"tour-details-trigger"} --><div class="wp-block-buttons tour-details-trigger"><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#">Подробнее</a></div><!-- /wp:button --></div><!-- /wp:buttons -->
+            <!-- wp:buttons {"className":"tour-details-trigger"} --><div class="wp-block-buttons tour-details-trigger"><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( home_url( '/' . $tour['slug'] . '/' ) ); ?>">Подробнее</a></div><!-- /wp:button --></div><!-- /wp:buttons -->
           </div>
           <!-- /wp:group -->
 <?php endforeach; ?>
-        </div>
-        <!-- /wp:group -->
-      </div>
-      <!-- /wp:group -->
-      <!-- wp:group {"anchor":"tour-details","className":"tour-details-library","layout":{"type":"grid","columnCount":2,"minimumColumnWidth":null}} -->
-      <div id="tour-details" class="wp-block-group tour-details-library">
-<?php foreach ( $tours as $tour ) : ?>
-        <!-- wp:group {"className":"tour-details","layout":{"type":"constrained"}} -->
-        <div class="wp-block-group tour-details">
-          <!-- wp:paragraph {"className":"tour-detail-kicker"} --><p class="tour-detail-kicker"><?php echo esc_html( $tour['kicker'] ); ?></p><!-- /wp:paragraph -->
-          <!-- wp:heading {"level":3} --><h3 class="wp-block-heading"><?php echo esc_html( $tour['title'] ); ?></h3><!-- /wp:heading -->
-          <!-- wp:paragraph {"className":"tour-detail-lead"} --><p class="tour-detail-lead"><?php echo esc_html( $tour['lead'] ); ?></p><!-- /wp:paragraph -->
-<?php foreach ( $tour['paragraphs'] as $paragraph ) : ?>
-          <!-- wp:paragraph --><p><?php echo esc_html( $paragraph ); ?></p><!-- /wp:paragraph -->
-<?php endforeach; ?>
-<?php if ( ! empty( $tour['facts'] ) ) : ?>
-          <!-- wp:group {"className":"tour-detail-facts tour-detail-facts--five","layout":{"type":"grid","columnCount":5,"minimumColumnWidth":null}} -->
-          <div class="wp-block-group tour-detail-facts tour-detail-facts--five">
-<?php foreach ( $tour['facts'] as $fact ) : ?>
-            <!-- wp:paragraph --><p><strong><?php echo esc_html( $fact['value'] ); ?></strong><br><?php echo esc_html( $fact['label'] ); ?></p><!-- /wp:paragraph -->
-<?php endforeach; ?>
-          </div>
-          <!-- /wp:group -->
-<?php endif; ?>
-<?php if ( ! empty( $tour['program'] ) ) : ?>
-          <!-- wp:group {"className":"tour-detail-program","layout":{"type":"constrained"}} -->
-          <div class="wp-block-group tour-detail-program">
-            <!-- wp:heading {"level":4} --><h4 class="wp-block-heading">Программа тура</h4><!-- /wp:heading -->
-<?php foreach ( $tour['program'] as $day ) : ?>
-            <!-- wp:group {"className":"tour-detail-day","layout":{"type":"constrained"}} -->
-            <div class="wp-block-group tour-detail-day">
-              <!-- wp:heading {"level":4} --><h4 class="wp-block-heading"><?php echo esc_html( $day['title'] ); ?></h4><!-- /wp:heading -->
-<?php foreach ( $day['paragraphs'] as $day_paragraph ) : ?>
-              <!-- wp:paragraph --><p><?php echo esc_html( $day_paragraph ); ?></p><!-- /wp:paragraph -->
-<?php endforeach; ?>
-            </div>
-            <!-- /wp:group -->
-<?php endforeach; ?>
-          </div>
-          <!-- /wp:group -->
-<?php endif; ?>
-<?php if ( ! empty( $tour['price'] ) ) : ?>
-          <!-- wp:group {"className":"tour-detail-price","layout":{"type":"constrained"}} -->
-          <div class="wp-block-group tour-detail-price">
-            <!-- wp:paragraph {"className":"tour-detail-price-label"} --><p class="tour-detail-price-label">Стоимость тура</p><!-- /wp:paragraph -->
-            <!-- wp:paragraph {"className":"tour-detail-price-old"} --><p class="tour-detail-price-old"><s><?php echo esc_html( $tour['price']['old'] ); ?></s> <mark><?php echo esc_html( $tour['price']['discount'] ); ?></mark></p><!-- /wp:paragraph -->
-            <!-- wp:paragraph {"className":"tour-detail-price-current"} --><p class="tour-detail-price-current"><strong><?php echo esc_html( $tour['price']['current'] ); ?></strong></p><!-- /wp:paragraph -->
-            <!-- wp:paragraph {"className":"tour-detail-note"} --><p class="tour-detail-note"><?php echo esc_html( $tour['price']['note'] ); ?></p><!-- /wp:paragraph -->
-          </div>
-          <!-- /wp:group -->
-<?php endif; ?>
-          <!-- wp:buttons {"className":"tour-detail-cta"} --><div class="wp-block-buttons tour-detail-cta"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact"><?php echo esc_html( $tour['cta'] ?? 'Обсудить этот тур' ); ?></a></div><!-- /wp:button --></div><!-- /wp:buttons -->
-        </div>
-        <!-- /wp:group -->
-<?php endforeach; ?>
-      </div>
-      <!-- /wp:group -->
-    </div>
-    <!-- /wp:group -->
+        </div><!-- /wp:group -->
+      </div><!-- /wp:group -->
+    </div><!-- /wp:group -->
   </div>
   <!-- /wp:group -->
 
-  <!-- wp:group {"align":"full","anchor":"program","className":"section-shell program-section reveal-on-scroll","layout":{"type":"constrained"}} -->
-  <div id="program" class="wp-block-group alignfull section-shell program-section reveal-on-scroll">
-    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"program-grid"} -->
-    <div class="wp-block-columns alignwide are-vertically-aligned-top program-grid">
-      <!-- wp:column {"verticalAlignment":"top","width":"46%","className":"program-visual"} --><div class="wp-block-column is-vertically-aligned-top program-visual" style="flex-basis:46%"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/turquoise-yacht.png' ); ?>" alt="Яхта у побережья Турции" /></figure><!-- /wp:image --></div><!-- /wp:column -->
-      <!-- wp:column {"verticalAlignment":"top","className":"program-copy"} -->
-      <div class="wp-block-column is-vertically-aligned-top program-copy">
-        <!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Шесть дней.<br><em>У каждого — свой вкус.</em></h2><!-- /wp:heading -->
-        <!-- wp:paragraph {"className":"program-intro"} --><p class="program-intro">Первый маршрут посвящён Стамбулу. Он насыщенный, но не изматывающий: важные места, локальные адреса и время для собственного города.</p><!-- /wp:paragraph -->
-        <!-- wp:group {"className":"program-list","layout":{"type":"constrained"}} -->
-        <div class="wp-block-group program-list">
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>01</span> Босфор встречает</summary><!-- wp:paragraph --><p>Встречаемся в отеле, знакомимся и выходим к воде. Первый вечер — мягкий свет над Босфором и ужин, с которого начинается общая история.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>02</span> Город империй</summary><!-- wp:paragraph --><p>Айя-София, Голубая мечеть и скрытые детали исторического центра — раньше основной толпы и с паузой на кофе во внутреннем дворике.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>03</span> Вверх к Галате</summary><!-- wp:paragraph --><p>Каракёй, старые пассажи, лестницы Галаты и дегустации по пути. Вечером — свободное время для rooftop-бара, хаммама или прогулки.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>04</span> Между двух берегов</summary><!-- wp:paragraph --><p>Пересекаем Босфор на пароме, исследуем Кадыкёй и Моду, пробуем современную турецкую кухню и встречаем закат на азиатской стороне.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>05</span> Свой Стамбул</summary><!-- wp:paragraph --><p>День без обязательной программы. Поможем выбрать идею: Принцевы острова, дворцы Босфора, арт-кварталы или неспешный шопинг.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span>06</span> До скорой встречи</summary><!-- wp:paragraph --><p>Завтракаем, обмениваемся фотографиями и впечатлениями. Трансфер в аэропорт или продолжение путешествия — подскажем варианты.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-        </div>
-        <!-- /wp:group -->
-      </div>
-      <!-- /wp:column -->
-    </div>
+  <!-- wp:group {"align":"full","anchor":"faq","className":"section-shell faq-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="faq" class="wp-block-group alignfull section-shell faq-section reveal-on-scroll">
+    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"faq-grid"} -->
+    <div class="wp-block-columns alignwide are-vertically-aligned-top faq-grid"><!-- wp:column {"verticalAlignment":"top","width":"42%","className":"faq-intro"} --><div class="wp-block-column is-vertically-aligned-top faq-intro" style="flex-basis:42%"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Перед тем<br><em>как решиться.</em></h2><!-- /wp:heading --><!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"faq-image"} --><figure class="wp-block-image size-full faq-image"><img src="<?php echo esc_url( $images_uri . '/tea-by-bosphorus.jpg' ); ?>" alt="Чай у Босфора" /></figure><!-- /wp:image --></div><!-- /wp:column --><!-- wp:column {"verticalAlignment":"top","className":"faq-list"} --><div class="wp-block-column is-vertically-aligned-top faq-list">
+      <!-- wp:details --><details class="wp-block-details"><summary>Нужна ли виза и какие документы потребуются?</summary><!-- wp:paragraph --><p>Правила зависят от гражданства и могут меняться. До бронирования мы подскажем, какие требования нужно проверить в официальных источниках именно для вашей поездки.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Что входит в стоимость тура?</summary><!-- wp:paragraph --><p>Состав включённых и дополнительных услуг у каждого маршрута свой. Все подтверждённые условия будут указаны на странице тура и зафиксированы до оплаты; если какой-то пункт ещё уточняется, менеджер сообщит об этом заранее.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Входит ли перелёт и поможете ли подобрать рейс?</summary><!-- wp:paragraph --><p>Статус перелёта указывается для каждого тура отдельно. Если информации на странице пока нет, уточним её до бронирования и поможем сориентироваться по удобным вариантам перелёта.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Где мы будем жить?</summary><!-- wp:paragraph --><p>Отель, категория номера и формат размещения подтверждаются для конкретного выезда. Эти данные вы получите до оплаты; при необходимости обсудим одноместное размещение и другие пожелания.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Можно ли поехать одному?</summary><!-- wp:paragraph --><p>Да, можно оставить заявку без компании. Мы расскажем о составе группы, вариантах размещения и поможем понять, насколько выбранный формат подходит именно вам.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Сколько человек будет в группе?</summary><!-- wp:paragraph --><p>Если размер группы уже определён, он указан на странице тура. Для маршрутов в подготовке точное количество участников подтверждается до бронирования.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Подойдёт ли тур детям и нужна ли физическая подготовка?</summary><!-- wp:paragraph --><p>Это зависит от маршрута, возраста ребёнка и уровня активности. Расскажите нам о составе поездки и возможных ограничениях — мы честно подскажем подходящий вариант.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+      <!-- wp:details --><details class="wp-block-details"><summary>Как проходит бронирование и что будет при отмене?</summary><!-- wp:paragraph --><p>Размер предоплаты, сроки и правила отмены должны быть указаны в документах конкретного тура. До перевода денег внимательно ознакомьтесь с условиями; мы ответим на вопросы по каждому пункту.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
+    </div><!-- /wp:column --></div>
     <!-- /wp:columns -->
   </div>
   <!-- /wp:group -->
 
-  <!-- wp:group {"align":"full","className":"section-shell moments-section reveal-on-scroll","layout":{"type":"constrained"}} -->
-  <div class="wp-block-group alignfull section-shell moments-section reveal-on-scroll">
-    <!-- wp:group {"align":"wide","className":"moments-heading","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group alignwide moments-heading"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">То, что остаётся<br><em>после путешествия.</em></h2><!-- /wp:heading --></div><!-- /wp:group -->
-    <!-- wp:group {"align":"wide","className":"moments-grid","layout":{"type":"grid","columnCount":12,"minimumColumnWidth":null}} -->
-    <div class="wp-block-group alignwide moments-grid">
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"moment moment-a"} --><figure class="wp-block-image size-full moment moment-a"><img src="<?php echo esc_url( $images_uri . '/galata-stairs-editorial.jpg' ); ?>" alt="Каменные лестницы Галаты" /></figure><!-- /wp:image -->
-      <!-- wp:group {"className":"moment-quote","layout":{"type":"constrained"}} --><div class="wp-block-group moment-quote"><!-- wp:paragraph {"className":"quote-mark"} --><p class="quote-mark">“</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Лучшие впечатления не нужно догонять. Для них нужно оставить место.</h3><!-- /wp:heading --></div><!-- /wp:group -->
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"moment moment-b"} --><figure class="wp-block-image size-full moment moment-b"><img src="<?php echo esc_url( $images_uri . '/antalya-harbor.png' ); ?>" alt="Старый порт Антальи в вечернем свете" /></figure><!-- /wp:image -->
-      <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"moment moment-c"} --><figure class="wp-block-image size-full moment moment-c"><img src="<?php echo esc_url( $images_uri . '/tea-by-bosphorus.jpg' ); ?>" alt="Чай и симит у Босфора" /></figure><!-- /wp:image -->
-    </div>
-    <!-- /wp:group -->
+  <!-- wp:group {"align":"full","anchor":"reviews","className":"section-shell reviews-section reveal-on-scroll","layout":{"type":"constrained"}} -->
+  <div id="reviews" class="wp-block-group alignfull section-shell reviews-section reveal-on-scroll">
+    <!-- wp:columns {"align":"wide","verticalAlignment":"bottom","className":"reviews-heading"} --><div class="wp-block-columns alignwide are-vertically-aligned-bottom reviews-heading"><!-- wp:column {"verticalAlignment":"bottom","width":"64%"} --><div class="wp-block-column is-vertically-aligned-bottom" style="flex-basis:64%"><!-- wp:paragraph {"className":"eyebrow reviews-eyebrow"} --><p class="eyebrow reviews-eyebrow">Отзывы путешественников</p><!-- /wp:paragraph --><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Слова, которые<br><em>хочется сохранить.</em></h2><!-- /wp:heading --></div><!-- /wp:column --><!-- wp:column {"verticalAlignment":"bottom"} --><div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph {"className":"reviews-disclaimer"} --><p class="reviews-disclaimer"><strong>До публикации замените примеры реальными отзывами.</strong> Эти тексты показывают будущий формат секции и не являются отзывами клиентов.</p><!-- /wp:paragraph --></div><!-- /wp:column --></div><!-- /wp:columns -->
+    <!-- wp:group {"align":"wide","className":"reviews-grid","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":null}} --><div class="wp-block-group alignwide reviews-grid">
+      <!-- wp:group {"className":"review-card","layout":{"type":"constrained"}} --><div class="wp-block-group review-card"><!-- wp:paragraph {"className":"review-card-label"} --><p class="review-card-label">Пример формата · спокойный ритм</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-quote"} --><p class="review-card-quote">«Я боялась, что пять дней превратятся в бесконечную гонку. Вместо этого мы увидели главное, пили кофе в местах без туристических вывесок и оставляли время для себя. Я вернулась не уставшей, а наполненной».</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-author"} --><p class="review-card-author">Имя путешественника <span>· демонстрационный текст</span></p><!-- /wp:paragraph --></div><!-- /wp:group -->
+      <!-- wp:group {"className":"review-card review-card-featured","layout":{"type":"constrained"}} --><div class="wp-block-group review-card review-card-featured"><!-- wp:paragraph {"className":"review-card-label"} --><p class="review-card-label">Пример формата · поездка вдвоём</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-quote"} --><p class="review-card-quote">«Больше всего запомнилось ощущение заботы: трансфер, прогулки, рестораны и яхта сложились в одну историю. Не приходилось каждый вечер решать, куда идти завтра, — оставалось просто проживать Стамбул вдвоём».</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-author"} --><p class="review-card-author">Имена путешественников <span>· демонстрационный текст</span></p><!-- /wp:paragraph --></div><!-- /wp:group -->
+      <!-- wp:group {"className":"review-card","layout":{"type":"constrained"}} --><div class="wp-block-group review-card"><!-- wp:paragraph {"className":"review-card-label"} --><p class="review-card-label">Пример формата · путешествие соло</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-quote"} --><p class="review-card-quote">«Ехала одна и переживала, что буду чувствовать себя лишней. Уже в первый вечер мы стали маленькой компанией, а к финалу казалось, что путешествуем вместе давно. Очень камерный и тёплый формат».</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"review-card-author"} --><p class="review-card-author">Имя путешественника <span>· демонстрационный текст</span></p><!-- /wp:paragraph --></div><!-- /wp:group -->
+    </div><!-- /wp:group -->
   </div>
   <!-- /wp:group -->
 
@@ -388,75 +398,21 @@ $tours      = array(
       <!-- wp:column {"verticalAlignment":"bottom"} --><div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph {"className":"team-intro"} --><p class="team-intro">Здесь появятся организаторы, эксперты и сопровождающие маршрута. Фотографии и реальные данные можно заменить прямо в редакторе WordPress.</p><!-- /wp:paragraph --></div><!-- /wp:column -->
     </div>
     <!-- /wp:columns -->
-
     <!-- wp:group {"align":"wide","className":"team-grid","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":null}} -->
     <div class="wp-block-group alignwide team-grid">
+<?php for ( $team_index = 1; $team_index <= 3; $team_index++ ) : ?>
       <!-- wp:group {"className":"team-card","layout":{"type":"constrained"}} -->
       <div class="wp-block-group team-card">
-        <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"team-portrait"} --><figure class="wp-block-image size-full team-portrait"><img src="<?php echo esc_url( $images_uri . '/team-placeholder.svg' ); ?>" alt="Место для фотографии первого участника команды" /></figure><!-- /wp:image -->
-        <!-- wp:group {"className":"team-card-meta","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} --><div class="wp-block-group team-card-meta"><!-- wp:paragraph {"className":"team-number"} --><p class="team-number">01</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"team-role"} --><p class="team-role">Роль в команде</p><!-- /wp:paragraph --></div><!-- /wp:group -->
+        <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"team-portrait"} --><figure class="wp-block-image size-full team-portrait"><img src="<?php echo esc_url( $images_uri . '/team-placeholder.svg' ); ?>" alt="Место для фотографии участника команды" /></figure><!-- /wp:image -->
+        <!-- wp:group {"className":"team-card-meta","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} --><div class="wp-block-group team-card-meta"><!-- wp:paragraph {"className":"team-number"} --><p class="team-number"><?php echo esc_html( sprintf( '%02d', $team_index ) ); ?></p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"team-role"} --><p class="team-role">Роль в команде</p><!-- /wp:paragraph --></div><!-- /wp:group -->
         <!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Имя участника</h3><!-- /wp:heading -->
         <!-- wp:paragraph {"className":"team-bio"} --><p class="team-bio">Короткое описание опыта, специализации и того, за какую часть путешествия отвечает этот человек.</p><!-- /wp:paragraph -->
         <!-- wp:paragraph {"className":"team-contact-placeholder"} --><p class="team-contact-placeholder">Ссылка / социальная сеть <span>↗</span></p><!-- /wp:paragraph -->
       </div>
       <!-- /wp:group -->
-
-      <!-- wp:group {"className":"team-card","layout":{"type":"constrained"}} -->
-      <div class="wp-block-group team-card">
-        <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"team-portrait"} --><figure class="wp-block-image size-full team-portrait"><img src="<?php echo esc_url( $images_uri . '/team-placeholder.svg' ); ?>" alt="Место для фотографии второго участника команды" /></figure><!-- /wp:image -->
-        <!-- wp:group {"className":"team-card-meta","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} --><div class="wp-block-group team-card-meta"><!-- wp:paragraph {"className":"team-number"} --><p class="team-number">02</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"team-role"} --><p class="team-role">Роль в команде</p><!-- /wp:paragraph --></div><!-- /wp:group -->
-        <!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Имя участника</h3><!-- /wp:heading -->
-        <!-- wp:paragraph {"className":"team-bio"} --><p class="team-bio">Короткое описание опыта, специализации и того, за какую часть путешествия отвечает этот человек.</p><!-- /wp:paragraph -->
-        <!-- wp:paragraph {"className":"team-contact-placeholder"} --><p class="team-contact-placeholder">Ссылка / социальная сеть <span>↗</span></p><!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:group -->
-
-      <!-- wp:group {"className":"team-card","layout":{"type":"constrained"}} -->
-      <div class="wp-block-group team-card">
-        <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"team-portrait"} --><figure class="wp-block-image size-full team-portrait"><img src="<?php echo esc_url( $images_uri . '/team-placeholder.svg' ); ?>" alt="Место для фотографии третьего участника команды" /></figure><!-- /wp:image -->
-        <!-- wp:group {"className":"team-card-meta","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} --><div class="wp-block-group team-card-meta"><!-- wp:paragraph {"className":"team-number"} --><p class="team-number">03</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"team-role"} --><p class="team-role">Роль в команде</p><!-- /wp:paragraph --></div><!-- /wp:group -->
-        <!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Имя участника</h3><!-- /wp:heading -->
-        <!-- wp:paragraph {"className":"team-bio"} --><p class="team-bio">Короткое описание опыта, специализации и того, за какую часть путешествия отвечает этот человек.</p><!-- /wp:paragraph -->
-        <!-- wp:paragraph {"className":"team-contact-placeholder"} --><p class="team-contact-placeholder">Ссылка / социальная сеть <span>↗</span></p><!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:group -->
+<?php endfor; ?>
     </div>
     <!-- /wp:group -->
-  </div>
-  <!-- /wp:group -->
-
-  <!-- wp:group {"align":"full","anchor":"dates","className":"dates-section reveal-on-scroll","layout":{"type":"constrained"}} -->
-  <div id="dates" class="wp-block-group alignfull dates-section reveal-on-scroll">
-    <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"dates-background"} --><figure class="wp-block-image size-full dates-background"><img src="<?php echo esc_url( $images_uri . '/nemrut-sunrise.png' ); ?>" alt="Рассвет на горе Немрут" /></figure><!-- /wp:image -->
-    <!-- wp:columns {"align":"wide","verticalAlignment":"stretch","className":"dates-grid"} -->
-    <div class="wp-block-columns alignwide are-vertically-aligned-stretch dates-grid">
-      <!-- wp:column {"verticalAlignment":"stretch","width":"48%","className":"dates-intro"} --><div class="wp-block-column is-vertically-aligned-stretch dates-intro" style="flex-basis:48%"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Ваш Стамбул<br><em>уже близко.</em></h2><!-- /wp:heading --><!-- wp:paragraph --><p>Точная стоимость появится после согласования отелей, перелёта и состава программы.</p><!-- /wp:paragraph --></div><!-- /wp:column -->
-      <!-- wp:column {"verticalAlignment":"stretch","className":"offer-card"} -->
-      <div class="wp-block-column is-vertically-aligned-stretch offer-card">
-        <!-- wp:group {"className":"offer-top","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group offer-top"><!-- wp:paragraph {"className":"offer-status"} --><p class="offer-status">Ближайший тур</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>6 дней / 5 ночей</p><!-- /wp:paragraph --></div><!-- /wp:group -->
-        <!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Даты уточняются</h3><!-- /wp:heading -->
-        <!-- wp:paragraph {"className":"offer-price"} --><p class="offer-price">от — ₽</p><!-- /wp:paragraph -->
-        <!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->
-        <!-- wp:paragraph {"className":"offer-included-title"} --><p class="offer-included-title">Планируем включить</p><!-- /wp:paragraph -->
-        <!-- wp:list {"className":"offer-list"} --><ul class="wp-block-list offer-list"><li>проживание в центральном районе;</li><li>трансферы по программе;</li><li>экскурсии и локальные впечатления;</li><li>сопровождение тур-лидера.</li></ul><!-- /wp:list -->
-        <!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button {"width":100} --><div class="wp-block-button has-custom-width wp-block-button__width-100"><a class="wp-block-button__link wp-element-button" href="#contact">Получить программу первым <span>↗</span></a></div><!-- /wp:button --></div><!-- /wp:buttons -->
-      </div>
-      <!-- /wp:column -->
-    </div>
-    <!-- /wp:columns -->
-  </div>
-  <!-- /wp:group -->
-
-  <!-- wp:group {"align":"full","className":"section-shell faq-section reveal-on-scroll","layout":{"type":"constrained"}} -->
-  <div class="wp-block-group alignfull section-shell faq-section reveal-on-scroll">
-    <!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"faq-grid"} -->
-    <div class="wp-block-columns alignwide are-vertically-aligned-top faq-grid"><!-- wp:column {"verticalAlignment":"top","width":"42%"} --><div class="wp-block-column is-vertically-aligned-top" style="flex-basis:42%"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Перед тем<br><em>как решиться.</em></h2><!-- /wp:heading --></div><!-- /wp:column --><!-- wp:column {"verticalAlignment":"top","className":"faq-list"} --><div class="wp-block-column is-vertically-aligned-top faq-list">
-      <!-- wp:details --><details class="wp-block-details"><summary>Нужна ли виза?</summary><!-- wp:paragraph --><p>Для граждан России действует безвизовый режим. Перед публикацией сайта этот текст нужно проверить по актуальным официальным правилам.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-      <!-- wp:details --><details class="wp-block-details"><summary>Входит ли перелёт?</summary><!-- wp:paragraph --><p>Сейчас этот пункт не определён. Здесь будет точное условие тура и помощь с подбором удобного рейса.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-      <!-- wp:details --><details class="wp-block-details"><summary>Где мы будем жить?</summary><!-- wp:paragraph --><p>Название и описание отеля появятся после утверждения. Планируем удобную локацию с быстрым доступом к маршруту.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-      <!-- wp:details --><details class="wp-block-details"><summary>Можно ли поехать одному?</summary><!-- wp:paragraph --><p>Да. Формат небольшой группы подходит самостоятельным путешественникам — знакомство начинается ещё в общем чате до поездки.</p><!-- /wp:paragraph --></details><!-- /wp:details -->
-    </div><!-- /wp:column --></div>
-    <!-- /wp:columns -->
   </div>
   <!-- /wp:group -->
 
@@ -464,8 +420,8 @@ $tours      = array(
   <div id="contact" class="wp-block-group alignfull contact-section reveal-on-scroll">
     <!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"contact-background"} --><figure class="wp-block-image size-full contact-background"><img src="<?php echo esc_url( $images_uri . '/istanbul-golden-hour.png' ); ?>" alt="Стамбул на закате" /></figure><!-- /wp:image -->
     <!-- wp:group {"align":"wide","className":"contact-inner","layout":{"type":"constrained"}} -->
-    <div class="wp-block-group alignwide contact-inner"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Оставьте место<br><em>для нового.</em></h2><!-- /wp:heading --><!-- wp:paragraph {"fontSize":"lg"} --><p class="has-lg-font-size">Расскажем о программе, датах и стоимости, когда они будут утверждены.</p><!-- /wp:paragraph -->
-      <!-- wp:group {"className":"contact-placeholder","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group contact-placeholder"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:paragraph {"className":"placeholder-label"} --><p class="placeholder-label">Форма будет подключена</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Имя · телефон · удобный способ связи</p><!-- /wp:paragraph --></div><!-- /wp:group --><!-- wp:paragraph {"className":"placeholder-note"} --><p class="placeholder-note">Нужны получатель заявок и согласованный текст обработки персональных данных.</p><!-- /wp:paragraph --></div><!-- /wp:group -->
+    <div class="wp-block-group alignwide contact-inner"><!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Найдём тур,<br><em>который вам подходит.</em></h2><!-- /wp:heading --><!-- wp:paragraph {"fontSize":"lg"} --><p class="has-lg-font-size">Оставьте номер телефона — ответим на вопросы и поможем выбрать маршрут без навязчивых звонков.</p><!-- /wp:paragraph -->
+      <!-- wp:turkey-signature/contact-form /-->
     </div>
     <!-- /wp:group -->
   </div>

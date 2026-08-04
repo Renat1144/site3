@@ -24,6 +24,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      mailpit:
+        condition: service_started
     ports:
       - "${WORDPRESS_PORT:-8082}:80"
     environment:
@@ -32,11 +34,19 @@ services:
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       WORDPRESS_DEBUG: "0"
+      TS_MAIL_HOST: mailpit
+      TS_MAIL_PORT: 1025
       WORDPRESS_CONFIG_EXTRA: |
         define( 'WP_ENVIRONMENT_TYPE', 'local' );
         define( 'DISALLOW_FILE_EDIT', true );
     volumes:
       - ./:/var/www/html
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "${MAILPIT_PORT:-8026}:8025"
 
   wpcli:
     image: wordpress:cli-php8.3
