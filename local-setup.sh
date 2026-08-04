@@ -82,6 +82,10 @@ docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/tur
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-contact-trigger-validation-v29.php --allow-root
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-content-v30.php --allow-root
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-design-refinement-v31.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-visual-polish-v32.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-compact-layout-v33.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-program-days-v34.php --allow-root
+docker compose --profile tools run --rm wpcli wp language core install ru_RU --activate --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogname "$WORDPRESS_TITLE" --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogdescription 'Авторские путешествия по Турции' --allow-root
 docker compose --profile tools run --rm wpcli wp option update timezone_string 'Europe/Moscow' --allow-root

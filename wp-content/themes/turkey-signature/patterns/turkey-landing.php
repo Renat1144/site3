@@ -216,12 +216,9 @@ $other_tours  = array_values(
     <!-- wp:group {"align":"wide","className":"hero-stage","layout":{"type":"constrained"}} -->
     <div class="wp-block-group alignwide hero-stage">
       <!-- wp:heading {"level":1,"fontSize":"hero","className":"hero-title hero-title-brand"} --><h1 class="wp-block-heading hero-title hero-title-brand has-hero-font-size">Авторские туры<br><em>по Турции</em></h1><!-- /wp:heading -->
-      <!-- wp:group {"className":"hero-bottom","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+      <!-- wp:group {"className":"hero-bottom","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"left"}} -->
       <div class="wp-block-group hero-bottom">
-        <!-- wp:group {"className":"hero-copy","layout":{"type":"constrained"}} --><div class="wp-block-group hero-copy"><!-- wp:paragraph {"fontSize":"lg","className":"hero-lead"} --><p class="hero-lead has-lg-font-size">Продуманные маршруты по Стамбулу, Каппадокии и другим регионам — с комфортным ритмом, личным сопровождением и местами, которые редко входят в обычные программы.</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"hero-assurance"} --><p class="hero-assurance">Оставьте контакты — поможем выбрать подходящий маршрут и ответим на вопросы.</p><!-- /wp:paragraph --></div><!-- /wp:group -->
-        <!-- wp:buttons {"className":"hero-actions"} -->
-        <div class="wp-block-buttons hero-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact-form">Подобрать тур <span>↗</span></a></div><!-- /wp:button --><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#primary-tour">Смотреть главный тур</a></div><!-- /wp:button --></div>
-        <!-- /wp:buttons -->
+        <!-- wp:group {"className":"hero-copy","layout":{"type":"constrained"}} --><div class="wp-block-group hero-copy"><!-- wp:paragraph {"fontSize":"lg","className":"hero-lead"} --><p class="hero-lead has-lg-font-size">Продуманные маршруты по Стамбулу, Каппадокии и другим регионам — с комфортным ритмом, личным сопровождением и местами, которые редко входят в обычные программы.</p><!-- /wp:paragraph --></div><!-- /wp:group -->
       </div>
       <!-- /wp:group -->
     </div>
@@ -256,7 +253,6 @@ $other_tours  = array_values(
           <!-- wp:paragraph --><p><strong>3/5</strong><span>средняя активность</span></p><!-- /wp:paragraph -->
           <!-- wp:paragraph {"className":"primary-tour-fact-wide"} --><p class="primary-tour-fact-wide"><strong>Русский</strong><span>язык тура</span></p><!-- /wp:paragraph -->
         </div><!-- /wp:group -->
-        <!-- wp:buttons {"className":"primary-tour-actions","layout":{"type":"flex","justifyContent":"right"}} --><div class="wp-block-buttons primary-tour-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#program">Смотреть программу <span>↓</span></a></div><!-- /wp:button --><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#contact-form">Оставить заявку</a></div><!-- /wp:button --></div><!-- /wp:buttons -->
     </div><!-- /wp:group -->
   </div>
   <!-- /wp:group -->
@@ -281,9 +277,6 @@ $other_tours  = array_values(
       <div class="wp-block-column is-vertically-aligned-top welcome-copy" style="flex-basis:36%">
         <!-- wp:heading {"fontSize":"xl","className":"welcome-title"} --><h2 class="wp-block-heading welcome-title has-xl-font-size">Приветствую вас, дорогие<br>путешественники</h2><!-- /wp:heading -->
         <!-- wp:paragraph {"className":"welcome-text"} --><p class="welcome-text">и гости необыкновенного, многовекового города! Стамбул-великолепный город, который олицетворяет сочетание восточного очарования и западного утонченного стиля. Это место, где восток встречается с западом, и древность переплетается с современностью! Успешно занимаюсь туризмом более 20 лет, в том числе организацией и проведением как групповых, так индивидуальных туров. Стамбул занимает отдельное место в моем сердце. Благодаря знаниям и опыту работы, я смогу показать вам лучшие места в Стамбуле и открыть многие его секреты. И, конечно, мы обязательно прочувствуем удивительную атмосферу города и оценим его важный вклад в мировую культуру. Каждый из моих туристов - для меня дорогой гость. Поэтому я всегда адаптирую экскурсии с учетом ваших личных интересов и предпочтений.</p><!-- /wp:paragraph -->
-        <!-- wp:buttons {"className":"welcome-actions"} -->
-        <div class="wp-block-buttons welcome-actions"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#program">Посмотреть программу <span>↓</span></a></div><!-- /wp:button --></div>
-        <!-- /wp:buttons -->
       </div>
       <!-- /wp:column -->
     </div>
@@ -298,13 +291,12 @@ $other_tours  = array_values(
       <!-- wp:column {"verticalAlignment":"top","width":"46%","className":"program-visual"} --><div class="wp-block-column is-vertically-aligned-top program-visual" style="flex-basis:46%"><!-- wp:image {"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( $images_uri . '/turquoise-yacht.png' ); ?>" alt="Яхта у побережья Турции" /></figure><!-- /wp:image --></div><!-- /wp:column -->
       <!-- wp:column {"verticalAlignment":"top","className":"program-copy"} -->
       <div class="wp-block-column is-vertically-aligned-top program-copy">
-        <!-- wp:paragraph {"className":"eyebrow program-eyebrow"} --><p class="eyebrow program-eyebrow">Программа · Восточная сказка</p><!-- /wp:paragraph -->
         <!-- wp:heading {"fontSize":"xl"} --><h2 class="wp-block-heading has-xl-font-size">Пять дней.<br><em>Один живой Стамбул.</em></h2><!-- /wp:heading -->
         <!-- wp:paragraph {"className":"program-intro"} --><p class="program-intro">От первой встречи с Босфором до последнего спокойного утра — программа сохраняет баланс истории, локальных впечатлений и времени для отдыха.</p><!-- /wp:paragraph -->
         <!-- wp:group {"className":"program-list","layout":{"type":"constrained"}} -->
         <div class="wp-block-group program-list">
 <?php foreach ( $primary_tour['program'] as $day_index => $day ) : ?>
-          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span><?php echo esc_html( sprintf( '%02d', $day_index + 1 ) ); ?></span> <?php echo esc_html( preg_replace( '/^День\s+\d+\s+·\s*/u', '', $day['title'] ) ); ?></summary>
+          <!-- wp:details {"className":"program-day"} --><details class="wp-block-details program-day"><summary><span><?php echo esc_html( sprintf( 'День %d', $day_index + 1 ) ); ?></span> <?php echo esc_html( preg_replace( '/^День\s+\d+\s+·\s*/u', '', $day['title'] ) ); ?></summary>
 <?php foreach ( $day['paragraphs'] as $day_paragraph ) : ?>
             <!-- wp:paragraph --><p><?php echo esc_html( $day_paragraph ); ?></p><!-- /wp:paragraph -->
 <?php endforeach; ?>
@@ -356,6 +348,9 @@ $other_tours  = array_values(
           </div>
           <!-- /wp:group -->
 <?php endforeach; ?>
+          <!-- wp:group {"className":"tour-selection-cta","layout":{"type":"constrained"}} -->
+          <div class="wp-block-group tour-selection-cta"><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Выбери понравившийся тебе тур<br><em>и оставь заявку</em></h3><!-- /wp:heading --></div>
+          <!-- /wp:group -->
         </div><!-- /wp:group -->
       </div><!-- /wp:group -->
     </div><!-- /wp:group -->
