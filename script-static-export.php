@@ -100,14 +100,27 @@ $transform_page = static function ( string $html, string $relative_base ) use ( 
 		$html = preg_replace( $pattern, '', $html );
 	}
 
-	// GitHub Pages has no WordPress mail endpoint, so omit the live form and
-	// all controls that would open it while preserving the rest of each page.
+	// GitHub Pages has no WordPress mail endpoint, so omit the live form while
+	// preserving every CTA. Static CTAs are redirected to the contact section
+	// on the exported home page instead of pointing at the absent modal.
 	$html = preg_replace( '~<!-- ts-contact-static-omit:start -->.*?<!-- ts-contact-static-omit:end -->\s*~is', '', $html );
 	$html = preg_replace( '~<link\b(?=[^>]*turkey-signature-contact)[^>]*>\s*~is', '', $html );
 	$html = preg_replace( '~<style\b(?=[^>]*turkey-signature-contact)[^>]*>.*?</style>\s*~is', '', $html );
 	$html = preg_replace( '~<script\b(?=[^>]*turkey-signature-contact)[^>]*>.*?</script>\s*~is', '', $html );
-	$html = preg_replace( '~<p\b[^>]*class=["\'][^"\']*header-cta[^"\']*["\'][^>]*>.*?</p>\s*~is', '', $html );
-	$html = preg_replace( '~<a\b(?=[^>]*href=["\']#contact(?:-form)?["\'])[^>]*>.*?</a>~is', '', $html );
+
+	// Root-relative fragment links work in local WordPress but escape the
+	// /site3/ project path on GitHub Pages. Keep them relative to the exported
+	// home page: ./#section from index.html and ../#section from tour pages.
+	$html = preg_replace_callback(
+		'~\bhref=(["\'])/\#([^"\']+)\1~i',
+		static fn( $matches ) => 'href=' . $matches[1] . $relative_base . '#' . $matches[2] . $matches[1],
+		$html
+	);
+	$html = preg_replace_callback(
+		'~\bhref=(["\'])#contact(?:-form)?\1~i',
+		static fn( $matches ) => 'href=' . $matches[1] . $relative_base . '#contact' . $matches[1],
+		$html
+	);
 
 	$html = str_replace( $source_url . '/', $relative_base, $html );
 	$html = str_replace( $source_url, rtrim( $relative_base, '/' ), $html );
@@ -123,6 +136,10 @@ $transform_page = static function ( string $html, string $relative_base ) use ( 
 
 	if ( str_contains( $html, 'localhost:' ) ) {
 		throw new RuntimeException( 'A localhost URL remains in a generated page.' );
+	}
+
+	if ( preg_match( '~\bhref=["\']/\#~i', $html ) ) {
+		throw new RuntimeException( 'A root-relative fragment link remains in a generated page.' );
 	}
 
 	if ( preg_match( '~<(?:script|link)\b[^>]*(?:wp-includes/js|wp-json|xmlrpc\.php)~i', $html ) ) {
