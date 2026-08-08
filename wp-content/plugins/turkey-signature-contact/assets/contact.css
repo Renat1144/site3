@@ -141,6 +141,18 @@ html.ts-contact-open {
   gap: 1.15rem;
 }
 
+.ts-contact-form__fields {
+  min-width: 0;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  border: 0;
+  transition: opacity 180ms ease;
+}
+
+.ts-contact-form__fields:disabled {
+  opacity: 0.48;
+}
+
 .ts-contact-field {
   display: grid;
   gap: 0.5rem;
@@ -187,6 +199,18 @@ html.ts-contact-open {
   color: #655f68;
   font-size: 0.72rem;
   line-height: 1.45;
+}
+
+.ts-contact-form__consent a {
+  color: #793e56;
+  font-weight: 650;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.ts-contact-form__consent a:hover,
+.ts-contact-form__consent a:focus-visible {
+  color: #a75847;
 }
 
 .ts-contact-form__consent input {

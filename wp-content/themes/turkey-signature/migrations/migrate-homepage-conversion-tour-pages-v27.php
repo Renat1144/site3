@@ -83,6 +83,11 @@ $build_tour_page = static function ( array $tour ) use ( $header_block, $footer_
 	$kicker    = esc_html( $tour['kicker'] );
 	$lead      = esc_html( $tour['lead'] );
 	$alt       = esc_attr( $tour['alt'] );
+	$facts     = array(
+		array( 'value' => '8–12', 'label' => 'участников' ),
+		array( 'value' => 'Русский', 'label' => 'язык тура' ),
+	);
+	$cta_note  = 'Для получения более подробной и актуальной информации оставьте заявку на обратный звонок — и мы обязательно с вами свяжемся!';
 
 	$content  = $header_block . "\n";
 	$content .= '<!-- wp:group {"tagName":"main","align":"full","anchor":"start","className":"tour-page","layout":{"type":"default"}} -->' . "\n";
@@ -93,52 +98,31 @@ $build_tour_page = static function ( array $tour ) use ( $header_block, $footer_
 	$content .= '<!-- wp:group {"align":"wide","className":"tour-page-hero__content","layout":{"type":"constrained"}} --><div class="wp-block-group alignwide tour-page-hero__content">';
 	$content .= '<!-- wp:paragraph {"className":"tour-page-kicker"} --><p class="tour-page-kicker">' . $kicker . '</p><!-- /wp:paragraph -->';
 	$content .= '<!-- wp:heading {"level":1,"className":"tour-page-title"} --><h1 class="wp-block-heading tour-page-title">' . $title . '</h1><!-- /wp:heading -->';
-	$content .= '<!-- wp:group {"className":"tour-page-hero__bottom","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} --><div class="wp-block-group tour-page-hero__bottom">';
-	$content .= '<!-- wp:paragraph {"className":"tour-page-hero__lead"} --><p class="tour-page-hero__lead">' . $lead . '</p><!-- /wp:paragraph -->';
-	$content .= '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact-form">Оставить заявку <span>↗</span></a></div><!-- /wp:button --></div><!-- /wp:buttons -->';
-	$content .= '</div><!-- /wp:group -->';
-
-	if ( ! empty( $tour['facts'] ) ) {
-		$content .= '<!-- wp:group {"className":"tour-page-facts","layout":{"type":"grid","columnCount":5,"minimumColumnWidth":null}} --><div class="wp-block-group tour-page-facts">';
-		foreach ( $tour['facts'] as $fact ) {
-			$content .= '<!-- wp:paragraph --><p><strong>' . esc_html( $fact['value'] ) . '</strong><br>' . esc_html( $fact['label'] ) . '</p><!-- /wp:paragraph -->';
-		}
-		$content .= '</div><!-- /wp:group -->';
-	}
 
 	$content .= '</div><!-- /wp:group -->';
 	$content .= '</div><!-- /wp:group -->' . "\n";
 	$content .= '<!-- wp:group {"align":"full","className":"tour-page-body","layout":{"type":"constrained"}} -->' . "\n";
 	$content .= '<div class="wp-block-group alignfull tour-page-body">';
 	$content .= '<!-- wp:columns {"align":"wide","verticalAlignment":"top","className":"tour-page-summary"} --><div class="wp-block-columns alignwide are-vertically-aligned-top tour-page-summary">';
-	$content .= '<!-- wp:column {"verticalAlignment":"top","width":"65%","className":"tour-page-copy"} --><div class="wp-block-column is-vertically-aligned-top tour-page-copy" style="flex-basis:65%">';
-	$content .= '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">О маршруте</h2><!-- /wp:heading -->';
+	$content .= '<!-- wp:column {"verticalAlignment":"top","width":"100%","className":"tour-page-copy"} --><div class="wp-block-column is-vertically-aligned-top tour-page-copy" style="flex-basis:100%">';
+	$content .= '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">О туре</h2><!-- /wp:heading -->';
+	$content .= '<!-- wp:paragraph {"className":"tour-page-copy-lead"} --><p class="tour-page-copy-lead">' . $lead . '</p><!-- /wp:paragraph -->';
 	foreach ( (array) $tour['paragraphs'] as $paragraph ) {
 		$content .= '<!-- wp:paragraph --><p>' . esc_html( $paragraph ) . '</p><!-- /wp:paragraph -->';
 	}
 	$content .= '</div><!-- /wp:column -->';
-	$content .= '<!-- wp:column {"verticalAlignment":"top","className":"tour-page-side"} --><div class="wp-block-column is-vertically-aligned-top tour-page-side">';
-	$content .= '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Коротко о туре</h3><!-- /wp:heading -->';
-
-	if ( ! empty( $tour['facts'] ) ) {
-		$content .= '<!-- wp:list --><ul class="wp-block-list">';
-		foreach ( $tour['facts'] as $fact ) {
-			$content .= '<li><strong>' . esc_html( $fact['value'] ) . '</strong> — ' . esc_html( $fact['label'] ) . '</li>';
-		}
-		$content .= '</ul><!-- /wp:list -->';
-	} else {
-		$content .= '<!-- wp:paragraph --><p>Длительность, размер группы, даты и стоимость этого маршрута уточняются. Оставьте заявку — сообщим подтверждённые условия до бронирования.</p><!-- /wp:paragraph -->';
-	}
-
-	if ( ! empty( $tour['price'] ) ) {
-		$content .= '<!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->';
-		$content .= '<!-- wp:paragraph {"className":"tour-page-price-old"} --><p class="tour-page-price-old"><s>' . esc_html( $tour['price']['old'] ) . '</s> <mark>' . esc_html( $tour['price']['discount'] ) . '</mark></p><!-- /wp:paragraph -->';
-		$content .= '<!-- wp:paragraph {"className":"tour-page-price-current"} --><p class="tour-page-price-current"><strong>' . esc_html( $tour['price']['current'] ) . '</strong></p><!-- /wp:paragraph -->';
-		$content .= '<!-- wp:paragraph --><p>' . esc_html( $tour['price']['note'] ) . '</p><!-- /wp:paragraph -->';
-	}
-
-	$content .= '</div><!-- /wp:column -->';
 	$content .= '</div><!-- /wp:columns -->';
+	$content .= '<!-- wp:group {"align":"wide","className":"tour-page-booking","layout":{"type":"constrained"}} --><div class="wp-block-group alignwide tour-page-booking">';
+	$content .= '<!-- wp:group {"className":"tour-page-facts","layout":{"type":"grid","columnCount":2,"minimumColumnWidth":null}} --><div class="wp-block-group tour-page-facts">';
+	foreach ( $facts as $fact ) {
+		$content .= '<!-- wp:paragraph --><p><strong>' . esc_html( $fact['value'] ) . '</strong><br>' . esc_html( $fact['label'] ) . '</p><!-- /wp:paragraph -->';
+	}
+	$content .= '</div><!-- /wp:group -->';
+	$content .= '<!-- wp:group {"className":"tour-page-application-row","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} --><div class="wp-block-group tour-page-application-row">';
+	$content .= '<!-- wp:paragraph {"className":"tour-page-application-note"} --><p class="tour-page-application-note">' . esc_html( $cta_note ) . '</p><!-- /wp:paragraph -->';
+	$content .= '<!-- wp:buttons {"className":"tour-page-application","layout":{"type":"flex","justifyContent":"right"}} --><div class="wp-block-buttons tour-page-application"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#contact-form">Оставить заявку <span>↗</span></a></div><!-- /wp:button --></div><!-- /wp:buttons -->';
+	$content .= '</div><!-- /wp:group -->';
+	$content .= '</div><!-- /wp:group -->';
 
 	if ( ! empty( $tour['program'] ) ) {
 		$content .= '<!-- wp:group {"align":"wide","className":"tour-page-program","layout":{"type":"constrained"}} --><div class="wp-block-group alignwide tour-page-program">';

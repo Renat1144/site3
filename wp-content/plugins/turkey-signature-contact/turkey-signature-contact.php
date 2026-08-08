@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Turkey Signature Contact
  * Description: Editable premium contact form with local mail testing support.
- * Version: 1.3.0
+ * Version: 1.4.0
  * Requires at least: 6.7
  * Requires PHP: 7.4
  * Author: Site owner
@@ -38,7 +38,7 @@ add_action(
 			'turkey-signature-contact-editor',
 			plugins_url( 'assets/editor.js', __FILE__ ),
 			array( 'wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
-			'1.3.0',
+			'1.4.0',
 			true
 		);
 
@@ -67,6 +67,8 @@ function ts_contact_render_panel( array $attributes, string $instance_id, bool $
 	$required_mark  = '<span aria-hidden="true">*</span>';
 	$success_title  = (string) $attributes['successTitle'];
 	$success_text   = (string) $attributes['successText'];
+	$privacy_url    = home_url( '/privacy-policy/' );
+	$consent_url    = home_url( '/personal-data-consent/' );
 
 	ob_start();
 	?>
@@ -80,17 +82,19 @@ function ts_contact_render_panel( array $attributes, string $instance_id, bool $
 				<input type="hidden" name="action" value="ts_contact_submit">
 				<input type="hidden" name="nonce" value="<?php echo esc_attr( $editor_preview ? '' : wp_create_nonce( 'ts_contact_submit' ) ); ?>">
 				<input type="hidden" name="tour_context" value="">
+				<label class="ts-contact-form__consent"><input type="checkbox" name="consent" value="1" required data-ts-contact-consent<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><span><?php echo esc_html( $attributes['consentText'] ); ?> <a href="<?php echo esc_url( $consent_url ); ?>" target="_blank" rel="noopener">Согласием на обработку персональных данных</a> и <a href="<?php echo esc_url( $privacy_url ); ?>" target="_blank" rel="noopener">Политикой конфиденциальности и обработки персональных данных</a>.</span></label>
+				<fieldset class="ts-contact-form__fields" data-ts-contact-fields disabled>
 				<div class="ts-contact-honeypot" aria-hidden="true"><label>Ваш сайт<input type="text" name="website" tabindex="-1" autocomplete="off"<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></label></div>
 				<div class="ts-contact-form__grid">
 					<label class="ts-contact-field"><span><?php echo esc_html( $attributes['nameLabel'] ); ?> <?php echo $required_mark; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><input type="text" name="name" autocomplete="name" maxlength="120" required<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></label>
 					<label class="ts-contact-field"><span><?php echo esc_html( $attributes['phoneLabel'] ); ?> <?php echo $required_mark; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="50" required<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></label>
 					<label class="ts-contact-field ts-contact-field--full"><span><?php echo esc_html( $attributes['emailLabel'] ); ?></span><input type="email" name="email" autocomplete="email"<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></label>
 				</div>
-				<label class="ts-contact-form__consent"><input type="checkbox" name="consent" value="1" required<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><span><?php echo esc_html( $attributes['consentText'] ); ?></span></label>
 				<div class="ts-contact-form__footer">
 					<p class="ts-contact-form__status" data-ts-contact-status role="status" aria-live="polite"></p>
 					<button class="ts-contact-form__submit" type="submit"<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html( $attributes['submitLabel'] ); ?> <span aria-hidden="true">↗</span></button>
 				</div>
+				</fieldset>
 			</form>
 			<div class="ts-contact-success" data-ts-contact-success hidden>
 				<span class="ts-contact-success__mark" aria-hidden="true"><span>✓</span></span>
@@ -197,6 +201,10 @@ function ts_contact_handle_submit(): void {
 	$lines[] = '';
 	$lines[] = 'Страница: ' . home_url( '/' );
 	$lines[] = 'Время: ' . wp_date( 'd.m.Y H:i' );
+	$lines[] = 'Согласие: подтверждено';
+	$lines[] = 'Версия согласия: 1.0 от 08.08.2026';
+	$lines[] = 'Документ согласия: ' . home_url( '/personal-data-consent/' );
+	$lines[] = 'Политика: ' . home_url( '/privacy-policy/' );
 
 	$headers = '' !== $email ? array( 'Reply-To: ' . $name . ' <' . $email . '>' ) : array();
 	$sent    = wp_mail( $recipient, 'Новая заявка — Авторские туры', implode( "\n", $lines ), $headers );

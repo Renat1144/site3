@@ -78,13 +78,24 @@ docker compose --profile tools run --rm wpcli wp theme activate turkey-signature
 docker compose --profile tools run --rm wpcli wp plugin activate turkey-signature-contact --allow-root
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-to-page.php --allow-root
 docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-conversion-tour-pages-v27.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-v28.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-contact-trigger-validation-v29.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-content-v30.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-design-refinement-v31.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-visual-polish-v32.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-compact-layout-v33.php --allow-root
-docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-program-days-v34.php --allow-root
+if docker compose --profile tools run --rm wpcli wp option get turkey_signature_homepage_hide_team_v39 --allow-root >/dev/null 2>&1; then
+	printf '%s\n' 'Current homepage migration v39 detected; legacy homepage migrations are already superseded.'
+else
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-v28.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-contact-trigger-validation-v29.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-primary-tour-content-v30.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-design-refinement-v31.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-visual-polish-v32.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-compact-layout-v33.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-program-days-v34.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-real-reviews-v35.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-reviews-price-v36.php --allow-root
+	docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-tour-layout-v37.php --allow-root
+fi
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-tour-page-order-v38.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-homepage-hide-team-v39.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-legal-pages-v40.php --allow-root
+docker compose --profile tools run --rm wpcli wp eval-file wp-content/themes/turkey-signature/migrations/migrate-privacy-cookie-disclosure-v41.php --allow-root
 docker compose --profile tools run --rm wpcli wp language core install ru_RU --activate --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogname "$WORDPRESS_TITLE" --allow-root
 docker compose --profile tools run --rm wpcli wp option update blogdescription 'Авторские путешествия по Турции' --allow-root

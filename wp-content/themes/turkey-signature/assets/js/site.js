@@ -155,18 +155,32 @@
 
 	const brandLockup = document.querySelector( '.brand-lockup' );
 	if ( brandLockup ) {
-		const scrollHome = ( event ) => {
+		const brandLink = brandLockup.querySelector( '.brand-name a' );
+		const isHomePage = document.body.classList.contains( 'home' );
+		const activateBrand = ( event ) => {
+			if ( isHomePage ) {
+				event?.preventDefault();
+				window.scrollTo( { top: 0, behavior: reducedMotion ? 'auto' : 'smooth' } );
+				return;
+			}
+
+			if ( event?.target?.closest?.( 'a' ) ) {
+				return;
+			}
+
 			event?.preventDefault();
-			window.scrollTo( { top: 0, behavior: reducedMotion ? 'auto' : 'smooth' } );
+			if ( brandLink?.href ) {
+				window.location.assign( brandLink.href );
+			}
 		};
 
 		brandLockup.setAttribute( 'role', 'link' );
 		brandLockup.setAttribute( 'tabindex', '0' );
-		brandLockup.setAttribute( 'aria-label', 'Перейти к началу страницы' );
-		brandLockup.addEventListener( 'click', scrollHome );
+		brandLockup.setAttribute( 'aria-label', isHomePage ? 'Перейти к началу страницы' : 'Перейти на главную страницу' );
+		brandLockup.addEventListener( 'click', activateBrand );
 		brandLockup.addEventListener( 'keydown', ( event ) => {
 			if ( event.key === 'Enter' || event.key === ' ' ) {
-				scrollHome( event );
+				activateBrand( event );
 			}
 		} );
 	}
@@ -283,6 +297,59 @@
 			item.open = false;
 		} );
 	} );
+
+	const cookieConsent = document.querySelector( '.cookie-consent' );
+	if ( cookieConsent ) {
+		const cookieName = 'ts_cookie_consent';
+		const maxAge = 365 * 24 * 60 * 60;
+		const readPreference = () => {
+			const match = document.cookie.split( '; ' ).find( ( item ) => item.startsWith( `${ cookieName }=` ) );
+			return match ? decodeURIComponent( match.split( '=' ).slice( 1 ).join( '=' ) ) : '';
+		};
+		const showConsent = () => {
+			cookieConsent.classList.add( 'is-visible' );
+		};
+		const hideConsent = () => {
+			cookieConsent.classList.remove( 'is-visible' );
+		};
+		const storePreference = ( value ) => {
+			const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+			document.cookie = `${ cookieName }=${ encodeURIComponent( value ) }; Path=/; Max-Age=${ maxAge }; SameSite=Lax${ secure }`;
+			document.documentElement.dataset.cookieConsent = value;
+			hideConsent();
+			window.dispatchEvent( new CustomEvent( 'ts:cookie-consent', { detail: { value } } ) );
+		};
+
+		cookieConsent.setAttribute( 'role', 'dialog' );
+		cookieConsent.setAttribute( 'aria-label', 'Настройки cookie' );
+		cookieConsent.setAttribute( 'aria-live', 'polite' );
+
+		const currentPreference = readPreference();
+		if ( currentPreference === 'all' || currentPreference === 'essential' ) {
+			document.documentElement.dataset.cookieConsent = currentPreference;
+		} else {
+			window.requestAnimationFrame( showConsent );
+		}
+
+		cookieConsent.querySelector( '.cookie-consent__accept a' )?.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			storePreference( 'all' );
+		} );
+		cookieConsent.querySelector( '.cookie-consent__essential a' )?.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			storePreference( 'essential' );
+		} );
+
+		document.addEventListener( 'click', ( event ) => {
+			const settingsLink = event.target.closest( '.footer-legal-links a[href="#cookie-settings"]' );
+			if ( ! settingsLink ) {
+				return;
+			}
+			event.preventDefault();
+			showConsent();
+			window.requestAnimationFrame( () => cookieConsent.querySelector( '.cookie-consent__accept a' )?.focus( { preventScroll: true } ) );
+		} );
+	}
 
 	const revealTargets = document.querySelectorAll( '.reveal-on-scroll' );
 	if ( reducedMotion || ! ( 'IntersectionObserver' in window ) ) {

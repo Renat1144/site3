@@ -80,8 +80,19 @@ $transform_page = static function ( string $html, string $relative_base ) use ( 
 		$navigation_replacements
 	);
 
-	if ( 1 !== $navigation_replacements ) {
-		throw new RuntimeException( 'The WordPress navigation stylesheet link was not found in a page.' );
+	if ( 0 === $navigation_replacements ) {
+		$html = preg_replace(
+			'~</head>~i',
+			"<style id=\"wp-block-navigation-css\">\n{$navigation_css}\n</style>\n</head>",
+			$html,
+			1,
+			$navigation_injections
+		);
+		if ( 1 !== $navigation_injections ) {
+			throw new RuntimeException( 'The navigation stylesheet could not be embedded in a page.' );
+		}
+	} elseif ( 1 !== $navigation_replacements ) {
+		throw new RuntimeException( 'The WordPress navigation stylesheet appeared more than once in a page.' );
 	}
 
 	$remove_patterns = array(
@@ -114,6 +125,13 @@ $transform_page = static function ( string $html, string $relative_base ) use ( 
 	$html = preg_replace_callback(
 		'~\bhref=(["\'])/\#([^"\']+)\1~i',
 		static fn( $matches ) => 'href=' . $matches[1] . $relative_base . '#' . $matches[2] . $matches[1],
+		$html
+	);
+	// Keep links to exported WordPress pages inside the GitHub Pages project
+	// path instead of sending visitors to the domain root.
+	$html = preg_replace_callback(
+		'~\bhref=(["\'])/(privacy-policy|personal-data-consent)/?\1~i',
+		static fn( $matches ) => 'href=' . $matches[1] . $relative_base . $matches[2] . '/' . $matches[1],
 		$html
 	);
 	$html = preg_replace_callback(
@@ -207,7 +225,7 @@ try {
 		throw new RuntimeException( 'The .nojekyll marker could not be written.' );
 	}
 
-	printf( "Static front page and %d tour pages created.\n", $page_count );
+	printf( "Static front page and %d published pages created.\n", $page_count );
 } catch ( Throwable $error ) {
 	fwrite( STDERR, $error->getMessage() . "\n" );
 	exit( 1 );

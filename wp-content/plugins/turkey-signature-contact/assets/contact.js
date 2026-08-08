@@ -14,13 +14,28 @@
 		const closeButton = dialog?.querySelector( '[data-ts-contact-close]' );
 		const status = dialog?.querySelector( '[data-ts-contact-status]' );
 		const submitButton = form?.querySelector( 'button[type="submit"]' );
+		const consent = form?.querySelector( '[data-ts-contact-consent]' );
+		const fields = form?.querySelector( '[data-ts-contact-fields]' );
 		const success = dialog?.querySelector( '[data-ts-contact-success]' );
 		const dialogLabelledBy = dialog?.getAttribute( 'aria-labelledby' ) || '';
 		let lastTrigger = null;
 
-		if ( ! dialog || ! form || ! submitButton ) {
+		if ( ! dialog || ! form || ! submitButton || ! consent || ! fields ) {
 			return null;
 		}
+
+		const syncConsent = () => {
+			fields.disabled = ! consent.checked;
+			form.classList.toggle( 'is-consented', consent.checked );
+		};
+
+		consent.addEventListener( 'change', () => {
+			syncConsent();
+			if ( consent.checked ) {
+				window.requestAnimationFrame( () => form.querySelector( 'input[name="name"]' )?.focus( { preventScroll: true } ) );
+			}
+		} );
+		syncConsent();
 
 		const setStatus = ( message, type = '' ) => {
 			if ( status ) {
@@ -64,7 +79,8 @@
 
 			document.documentElement.classList.add( 'ts-contact-open' );
 			dialog.showModal();
-			window.requestAnimationFrame( () => form.querySelector( 'input[name="name"]' )?.focus( { preventScroll: true } ) );
+			syncConsent();
+			window.requestAnimationFrame( () => ( consent.checked ? form.querySelector( 'input[name="name"]' ) : consent )?.focus( { preventScroll: true } ) );
 		};
 
 		closeButton?.addEventListener( 'click', closeDialog );
@@ -112,6 +128,7 @@
 				}
 
 				form.reset();
+				syncConsent();
 				form.hidden = true;
 				if ( success ) {
 					dialog.classList.add( 'is-success' );
